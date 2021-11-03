@@ -1,3 +1,4 @@
+import 'package:dalotee/presentation/pages/daily/daily_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,7 +8,6 @@ import 'package:dalotee/bloc/locale/locale_state.dart';
 import 'package:dalotee/configs/routes.dart';
 import 'package:dalotee/configs/service_locator.dart';
 import 'package:dalotee/generated/assets/fonts.gen.dart';
-import 'package:dalotee/presentation/pages/home/home_page.dart';
 import 'package:dalotee/presentation/widgets/base/app_configs_widgets.dart';
 import 'package:dalotee/values/colors.dart';
 
@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
               supportedLocales: S.delegate.supportedLocales,
               locale: state.locale,
               onGenerateRoute: Routes.generateRoute,
-              home: HomePage(),
+              home: DailyPage(),
             );
           }),
     );
@@ -72,17 +72,17 @@ class MyApp extends StatelessWidget {
         ));
   }
 
-  static void initSystemTheme() {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light
-        .copyWith(statusBarColor: Colors.transparent));
-  }
+  // static void initSystemTheme() {
+  //   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light
+  //       .copyWith(statusBarColor: Colors.transparent));
+  // }
 
   static Future<void> appRunner(FlavorConfig flavorConfig) async {
     // Ready to call native code
     WidgetsFlutterBinding.ensureInitialized();
 
     // System overlay
-    MyApp.initSystemTheme();
+    // MyApp.initSystemTheme();
 
     // IoC
     await setupServiceLocator();
