@@ -58,7 +58,9 @@ dependencies:
 
   #Swipe card
   card_swiper: ^1.0.4
-
+  
+  #Card flip
+  flip_card: ^0.6.0
 
 dev_dependencies:
   flutter_test:

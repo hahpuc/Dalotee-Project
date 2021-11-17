@@ -1,5 +1,6 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:dalotee/common/mixins/after_layout.dart';
+import 'package:dalotee/configs/routes.dart';
 import 'package:dalotee/configs/service_locator.dart';
 import 'package:dalotee/data/model/response/card_model.dart';
 import 'package:dalotee/generated/assets/assets.gen.dart';
@@ -7,6 +8,7 @@ import 'package:dalotee/generated/assets/fonts.gen.dart';
 import 'package:dalotee/presentation/pages/daily_tab/daily_bloc.dart';
 import 'package:dalotee/presentation/pages/daily_tab/daily_selected_page.dart';
 import 'package:dalotee/presentation/pages/daily_tab/daily_state.dart';
+import 'package:dalotee/presentation/pages/daily_tab/data.dart';
 import 'package:dalotee/presentation/widgets/base/custom_appbar.dart';
 import 'package:dalotee/presentation/widgets/base/custom_text.dart';
 import 'package:dalotee/values/colors.dart';
@@ -28,6 +30,7 @@ class DailyPage extends StatefulWidget {
 class _DailyPageState extends State<DailyPage> with AfterLayoutMixin {
   DailyPageBloc _bloc = DailyPageBloc(appRepository: locator.get());
   double _opacity = 0;
+  CardData _cardChosen = card;
 
   @override
   void afterFirstFrame(BuildContext context) {
@@ -99,25 +102,27 @@ class _DailyPageState extends State<DailyPage> with AfterLayoutMixin {
     return Expanded(
       child: Stack(
         children: [
-          Center(
-            child: Image.asset(
-              Assets.images.planet.path,
-            ),
-          ),
+          _opacity == 0
+              ? Center(
+                  child: Image.asset(
+                    Assets.images.planet.path,
+                  ),
+                )
+              : Container(),
           Center(
             child: AnimatedOpacity(
                 duration: Duration(milliseconds: 1000),
                 curve: Curves.easeIn,
                 onEnd: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const DailySelectedPage()));
+                  Future.delayed(Duration(milliseconds: 1000), () {
+                    Navigator.pushNamed(context, RoutePaths.DAILY_SELECTED,
+                        arguments: _cardChosen);
+                  });
                 },
                 opacity: _opacity,
                 child: Image.asset(
                   Assets.images.backCard.path,
-                  scale: 0.6,
+                  scale: 10,
                 )),
           ),
         ],
@@ -133,16 +138,10 @@ class _DailyPageState extends State<DailyPage> with AfterLayoutMixin {
           fontFamily: FontFamily.nutinoSans,
           fontSize: FontSize.BIG,
         ),
-        // AnimatedAlign(
-        //     alignment:
-        //         value % 2 == 0 ? Alignment.topCenter : Alignment.bottomCenter,
-        //     duration: Duration(milliseconds: 500),
-        //     curve: Curves.fastOutSlowIn,
-        //     child: ),
         SvgPicture.asset(Assets.images.downSelect.path),
         Center(
           child: Container(
-            margin: EdgeInsets.only(bottom: AppDimen.spacing_large),
+            margin: EdgeInsets.only(bottom: AppDimen.spacing_2),
             width: MediaQuery.of(context).size.width,
             height: 200,
             child: Swiper(
@@ -152,6 +151,7 @@ class _DailyPageState extends State<DailyPage> with AfterLayoutMixin {
                     print(index);
                     setState(() {
                       _opacity = _opacity == 0 ? 1 : 0;
+                      _cardChosen = listCard[index];
                     });
                   },
                   child: Image.asset(

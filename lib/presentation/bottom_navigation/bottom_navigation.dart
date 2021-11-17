@@ -1,7 +1,7 @@
 import 'package:dalotee/presentation/pages/daily_tab/daily_page.dart';
 import 'package:dalotee/presentation/pages/profile_tab/profile_page.dart';
+import 'package:dalotee/presentation/pages/search_tab/search_page.dart';
 import 'package:dalotee/presentation/pages/spread_tab/spread_page.dart';
-import 'package:dalotee/presentation/pages/tarot_card_tab/tarot_card_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -68,7 +68,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
       case 0:
         return DailyPage();
       case 1:
-        return TarotCardPage();
+        return SearchPage();
       case 2:
         return SpreadPage();
       case 3:
