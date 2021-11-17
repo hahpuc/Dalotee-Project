@@ -56,6 +56,10 @@ dependencies:
   flutter_easyloading: ^3.0.3
   change_app_package_name: ^1.0.0
 
+  #Swipe card
+  card_swiper: ^1.0.4
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -114,6 +118,28 @@ flutter:
           weight: 500
         - asset: "assets/fonts/SVN-Poppins-SemiBold.otf"
           weight: 700
+    - family: NutinoSans
+      fonts:
+        - asset: "assets/fonts/NunitoSans-Light.ttf"
+          weight: 300
+        - asset: "assets/fonts/NunitoSans-Regular.ttf"
+          weight: 400
+        - asset: "assets/fonts/NunitoSans-SemiBold.ttf"
+          weight: 600
+        - asset: "assets/fonts/NunitoSans-Bold.ttf"
+          weight: 700
+
+    - family: Gelasio
+      fonts:
+        - asset: "assets/fonts/Gelasio-Regular.ttf"
+          weight: 400
+        - asset: "assets/fonts/Gelasio-Medium.ttf"
+          weight: 500
+        - asset: "assets/fonts/Gelasio-SemiBold.ttf"
+          weight: 600
+        - asset: "assets/fonts/Gelasio-Bold.ttf"
+          weight: 700
+
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
