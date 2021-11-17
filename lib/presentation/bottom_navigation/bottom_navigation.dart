@@ -1,4 +1,3 @@
-import 'package:dalotee/generated/assets/assets.gen.dart';
 import 'package:dalotee/presentation/pages/daily_tab/daily_page.dart';
 import 'package:dalotee/presentation/pages/profile_tab/profile_page.dart';
 import 'package:dalotee/presentation/pages/spread_tab/spread_page.dart';
@@ -6,7 +5,6 @@ import 'package:dalotee/presentation/pages/tarot_card_tab/tarot_card_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class BottomNavigation extends StatefulWidget {
   const BottomNavigation({Key? key}) : super(key: key);
