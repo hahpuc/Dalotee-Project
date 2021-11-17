@@ -12,7 +12,6 @@ import 'package:dalotee/presentation/pages/demo/demo_bloc.dart';
 import 'package:dalotee/presentation/pages/demo/demo_state.dart';
 import 'package:dalotee/presentation/widgets/base/custom_button.dart';
 import 'package:dalotee/presentation/widgets/base/custom_text.dart';
-import 'package:dalotee/utils/network_utils.dart';
 import 'package:dalotee/values/colors.dart';
 import 'package:dalotee/values/dimens.dart';
 import 'package:dalotee/values/font_sizes.dart';

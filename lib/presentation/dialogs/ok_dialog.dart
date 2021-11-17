@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dalotee/generated/localization/l10n.dart';
 import 'package:dalotee/presentation/dialogs/base/base_dialog.dart';
-
 class OkDialog extends BaseDialog {
   final String? content;
   final String? title;

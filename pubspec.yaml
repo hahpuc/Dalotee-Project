@@ -37,7 +37,7 @@ dependencies:
   intl_utils: ^2.4.0 
 
   # Network
-  connectivity_plus: ^1.1.0
+  connectivity_plus: ^2.0.3
   http: ^0.13.3
 
   # Local persistence
@@ -47,7 +47,7 @@ dependencies:
   equatable: ^2.0.3
   
   # SVG
-  flutter_svg: ^0.22.0
+  flutter_svg: ^0.23.0+1
 
   # Indicator
   smooth_page_indicator: ^1.0.0+2

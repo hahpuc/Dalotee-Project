@@ -4,7 +4,6 @@ class BaseResponseData<T> {
   late final T? data;
 
   bool isSuccessful() {
-    // TODO
     return true;
   }
 }

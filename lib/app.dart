@@ -1,3 +1,4 @@
+import 'package:dalotee/presentation/bottom_navigation/bottom_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -53,7 +54,7 @@ class MyApp extends StatelessWidget {
               supportedLocales: S.delegate.supportedLocales,
               locale: state.locale,
               onGenerateRoute: Routes.generateRoute,
-              home: HomePage(),
+              home: BottomNavigation(),
             );
           }),
     );
@@ -68,7 +69,7 @@ class MyApp extends StatelessWidget {
             bodyColor: AppColor.colorTextNormal,
             fontFamily: FontFamily.poppins),
         appBarTheme: AppBarTheme(
-          brightness: Brightness.dark,
+          systemOverlayStyle: SystemUiOverlayStyle.light,
         ));
   }
 
