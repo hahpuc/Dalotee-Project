@@ -6,8 +6,8 @@ class ProfilePageState extends BaseState {}
 class ProfilePageLoadingState extends ProfilePageState {}
 
 class ProfilePageGetDataSuccessState extends ProfilePageState {
-  UserResponseData? user;
-  ProfilePageGetDataSuccessState(user);
+  final UserResponseData user;
+  ProfilePageGetDataSuccessState(this.user);
 }
 
 class ProfilePageGetDataFailState extends ProfilePageState {}

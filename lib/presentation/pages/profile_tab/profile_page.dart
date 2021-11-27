@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dalotee/common/mixins/after_layout.dart';
 import 'package:dalotee/configs/service_locator.dart';
 import 'package:dalotee/data/model/response/user_response.dart';
@@ -7,6 +9,7 @@ import 'package:dalotee/presentation/pages/profile_tab/profile_state.dart';
 import 'package:dalotee/presentation/widgets/base/custom_appbar.dart';
 import 'package:dalotee/presentation/widgets/base/custom_text.dart';
 import 'package:dalotee/values/colors.dart';
+import 'package:dalotee/values/dimens.dart';
 import 'package:dalotee/values/font_sizes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +46,7 @@ class _ProfilePageState extends State<ProfilePage> with AfterLayoutMixin {
       title: CustomText(
         "Trang cá nhân",
         fontFamily: FontFamily.gelasio,
-        fontSize: FontSize.BIG,
+        fontSize: FontSize.BIG_1,
       ),
     );
   }
@@ -65,15 +68,14 @@ class _ProfilePageState extends State<ProfilePage> with AfterLayoutMixin {
           bloc: _bloc,
           builder: (context, state) {
             if (state is ProfilePageGetDataSuccessState) {
-              print(state.user.toString());
               UserResponseData? user = state.user;
               if (user != null) {
                 return Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    CircleAvatar(
-                      maxRadius: 50,
-                    ),
-                    CustomText(user.name!)
+                    _buildAvatar(user),
+                    _buildName(user),
+                    _buildOption(user),
                   ],
                 );
               } else {
@@ -83,6 +85,63 @@ class _ProfilePageState extends State<ProfilePage> with AfterLayoutMixin {
             }
             return Container();
           },
+        ),
+      ),
+    );
+  }
+
+  _buildAvatar(UserResponseData user) {
+    return Container(
+      margin: EdgeInsets.only(top: AppDimen.spacing_3),
+      child: ClipOval(
+        child: Image.network(user.avatar!,
+            width: 100, height: 100, fit: BoxFit.cover),
+      ),
+    );
+  }
+
+  _buildName(UserResponseData user) {
+    return Column(
+      children: [
+        Container(
+          margin:
+              EdgeInsets.fromLTRB(0, AppDimen.spacing_3, 0, AppDimen.spacing_1),
+          child: CustomText(
+            user.name!,
+            fontFamily: FontFamily.gelasio,
+            fontSize: FontSize.BIG,
+          ),
+        ),
+        CustomText(
+          user.birthDay!.day.toString() +
+              '/' +
+              user.birthDay!.month.toString() +
+              '/' +
+              user.birthDay!.year.toString(),
+          fontFamily: FontFamily.nutinoSans,
+          fontSize: FontSize.SMALL,
+          color: AppColor.colorGreyText,
+        ),
+      ],
+    );
+  }
+
+  _buildOption(UserResponseData user) {
+    return InkWell(
+      onTap: () {},
+      child: Container(
+        margin: EdgeInsets.symmetric(
+            vertical: AppDimen.spacing_4,
+            horizontal: AppDimen.horizontalSpacing),
+        padding: EdgeInsets.symmetric(
+            vertical: AppDimen.spacing_3, horizontal: AppDimen.spacing_2),
+        decoration: BoxDecoration(color: AppColor.colorButton),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            CustomText('Lịch sử trải bài'),
+            Icon(Icons.arrow_forward_ios)
+          ],
         ),
       ),
     );

@@ -1,8 +1,8 @@
 import 'package:dalotee/data/model/response/card_model.dart';
 import 'package:dalotee/presentation/bottom_navigation/bottom_navigation.dart';
-import 'package:dalotee/presentation/pages/daily_tab/daily_detail.dart';
+import 'package:dalotee/presentation/pages/daily_tab/daily_detail/daily_detail.dart';
 import 'package:dalotee/presentation/pages/daily_tab/daily_page.dart';
-import 'package:dalotee/presentation/pages/daily_tab/daily_selected_page.dart';
+import 'package:dalotee/presentation/pages/daily_tab/daily_selected/daily_selected_page.dart';
 import 'package:flutter/material.dart';
 
 class RoutePaths {

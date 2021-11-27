@@ -6,7 +6,6 @@ import 'package:dalotee/data/model/response/card_model.dart';
 import 'package:dalotee/generated/assets/assets.gen.dart';
 import 'package:dalotee/generated/assets/fonts.gen.dart';
 import 'package:dalotee/presentation/pages/daily_tab/daily_bloc.dart';
-import 'package:dalotee/presentation/pages/daily_tab/daily_selected_page.dart';
 import 'package:dalotee/presentation/pages/daily_tab/daily_state.dart';
 import 'package:dalotee/presentation/pages/daily_tab/data.dart';
 import 'package:dalotee/presentation/widgets/base/custom_appbar.dart';

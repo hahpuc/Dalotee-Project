@@ -8,12 +8,15 @@ class ProfilePageBloc extends BlocBase<ProfilePageState> {
 
   ProfilePageBloc({required this.appRepository}) : super(ProfilePageState());
 
-  UserResponseData user = UserResponseData(
-      userId: 1, name: "Nguyen Thanh Long", birthDay: DateTime(2000, 04, 04));
   Future<void> getData() async {
     emit(ProfilePageLoadingState());
+    UserResponseData user = UserResponseData(
+        avatar:
+            'https://file.tinnhac.com/resize/600x-/2020/06/25/20200625233354-bf15.jpg',
+        userId: 1,
+        name: "Nguyen Thanh Long",
+        birthDay: DateTime(2000, 04, 04));
     if (user != null) {
-      print('SSSSSSSSSSSSSSSSSSS');
       emit(ProfilePageGetDataSuccessState(user));
     } else
       emit(ProfilePageGetDataFailState());
