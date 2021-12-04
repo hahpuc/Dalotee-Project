@@ -16,6 +16,7 @@ class ProfilePageBloc extends BlocBase<ProfilePageState> {
         userId: 1,
         name: "Nguyen Thanh Long",
         birthDay: DateTime(2000, 04, 04));
+    // ignore: unnecessary_null_comparison
     if (user != null) {
       emit(ProfilePageGetDataSuccessState(user));
     } else

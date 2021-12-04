@@ -12,6 +12,7 @@ class DailyPageBloc extends BlocBase<DailyPageState> {
   Future<void> getListCard() async {
     emit(DailyPageLoadingState());
     List<CardData> listCard = [card, card, card, card];
+    // ignore: unnecessary_null_comparison
     if (listCard != null) {
       emit(DailyPageGetDataSuccessState(listCard));
     } else

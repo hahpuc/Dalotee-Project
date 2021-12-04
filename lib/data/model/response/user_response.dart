@@ -1,7 +1,6 @@
 import 'package:dalotee/data/model/response/base/base_response.dart';
 
 class UserResponse extends BaseResponseData<UserResponseData> {
-  @override
   UserResponseData parseData(data) {
     throw UnimplementedError();
   }

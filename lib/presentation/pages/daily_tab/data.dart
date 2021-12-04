@@ -7,4 +7,5 @@ CardData card = CardData(
     name: "The Fool",
     front: Assets.images.theFoolCard.path,
     back: Assets.images.backCard.path,
-    description: description);
+    description: description,
+    category: "Pentacles");
