@@ -135,12 +135,17 @@ class _ProfilePageState extends State<ProfilePage> with AfterLayoutMixin {
             horizontal: AppDimen.horizontalSpacing),
         padding: EdgeInsets.symmetric(
             vertical: AppDimen.spacing_3, horizontal: AppDimen.spacing_2),
-        decoration: BoxDecoration(color: AppColor.colorButton),
+        decoration: BoxDecoration(
+            color: AppColor.colorButton,
+            borderRadius: BorderRadius.circular(AppDimen.spacing_1)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             CustomText('Lịch sử trải bài'),
-            Icon(Icons.arrow_forward_ios)
+            Icon(
+              Icons.arrow_forward_ios,
+              color: AppColor.colorGrey,
+            )
           ],
         ),
       ),

@@ -113,7 +113,7 @@ class _DailyPageState extends State<DailyPage> with AfterLayoutMixin {
                 duration: Duration(milliseconds: 1000),
                 curve: Curves.easeIn,
                 onEnd: () {
-                  Future.delayed(Duration(milliseconds: 1000), () {
+                  Future.delayed(Duration(milliseconds: 700), () {
                     Navigator.pushNamed(context, RoutePaths.DAILY_SELECTED,
                         arguments: _cardChosen);
                   });
@@ -137,7 +137,15 @@ class _DailyPageState extends State<DailyPage> with AfterLayoutMixin {
           fontFamily: FontFamily.nutinoSans,
           fontSize: FontSize.BIG,
         ),
-        SvgPicture.asset(Assets.images.downSelect.path),
+        Container(
+          width: 24,
+          height: 24,
+          margin: EdgeInsets.symmetric(vertical: AppDimen.spacing_1),
+          child: Image.asset(
+            Assets.images.arrowDown.path,
+            color: Colors.black,
+          ),
+        ),
         Center(
           child: Container(
             margin: EdgeInsets.only(bottom: AppDimen.spacing_2),

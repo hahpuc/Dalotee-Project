@@ -1,5 +1,6 @@
 import 'package:dalotee/presentation/widgets/base/custom_text.dart';
 import 'package:dalotee/values/colors.dart';
+import 'package:dalotee/values/dimens.dart';
 import 'package:flutter/material.dart';
 
 class KeywordWidget extends StatelessWidget {
@@ -8,6 +9,10 @@ class KeywordWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: const EdgeInsets.symmetric(
+        vertical: AppDimen.spacing_1,
+        horizontal: AppDimen.spacing_1,
+      ),
       decoration: BoxDecoration(
         color: AppColor.colorButton,
         borderRadius: BorderRadius.circular(5),
