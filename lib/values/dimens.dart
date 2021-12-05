@@ -6,6 +6,8 @@ class AppDimen {
   static const double spacing_3 = 24.0;
   static const double spacing_4 = 32.0;
   static const double spacing_5 = 40.0;
+  static const double sizeAppBarText = 20.0;
+  static const double sizeTextSmall = 14.0;
 
   static const double spacing_large = 50.0;
 }

@@ -51,9 +51,9 @@ class _BottomNavigationState extends State<BottomNavigation> {
           ],
           currentIndex: _selectedIndex,
           selectedIconTheme:
-              IconThemeData(color: Colors.amber, opacity: 1.0, size: 45),
+              IconThemeData(color: Colors.amber, opacity: 1.0, size: 24),
           unselectedIconTheme:
-              IconThemeData(color: Colors.black45, opacity: 0.5, size: 25),
+              IconThemeData(color: Colors.black45, opacity: 0.5, size: 24),
           // unselectedItemColor: const Color(0xFF8E8E93),
           // selectedItemColor: const Color(0xFFFFFFFF),
           onTap: _onItemTapped,

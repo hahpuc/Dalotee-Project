@@ -17,4 +17,6 @@ class AppColor {
   static const Color colorRedLight = Color(0xffff5826);
   static const Color colorGrey = Color(0xffb3b3b3);
   static const Color colorGreyText = Color(0xff808080);
+  static const Color colorBlurPink = Color(0xffE8D8D8);
+  static const Color colorDivider = Color(0xffC5C5C5);
 }
