@@ -27,10 +27,10 @@ class _SpreadPageState extends State<SpreadPage> with AfterLayoutMixin {
   SpreadPageBloc _bloc = SpreadPageBloc(appRepository: locator.get());
   List<String> categories = ['Love', 'Work', 'Money', 'Study', 'Prophecy'];
   List<String> iconSpread = [
-    Assets.images.cardSpreadLeft.path,
-    Assets.images.cardSpreadRight.path,
-    Assets.images.crossSpread.path,
-    Assets.images.oneCardSpread.path
+    Assets.images.imgCardSpreadLeft.path,
+    Assets.images.imgCardSpreadRight.path,
+    Assets.images.imgOneCardSpread.path,
+    Assets.images.imgOneCardSpread.path
   ];
 
   @override

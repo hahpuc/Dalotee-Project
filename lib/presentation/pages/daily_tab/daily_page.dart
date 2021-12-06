@@ -103,7 +103,9 @@ class _DailyPageState extends State<DailyPage> with AfterLayoutMixin {
           _opacity == 0
               ? Center(
                   child: Image.asset(
-                    Assets.images.planet.path,
+                    Assets.images.imgPlanet.path,
+                    width: 250.0,
+                    height: 250.0,
                   ),
                 )
               : Container(),
@@ -119,7 +121,7 @@ class _DailyPageState extends State<DailyPage> with AfterLayoutMixin {
                 },
                 opacity: _opacity,
                 child: Image.asset(
-                  Assets.images.backCard.path,
+                  Assets.images.imgBackCard.path,
                   scale: 10,
                 )),
           ),
@@ -133,7 +135,6 @@ class _DailyPageState extends State<DailyPage> with AfterLayoutMixin {
       children: [
         CustomText(
           "Chọn 1 lá bài",
-          fontFamily: FontFamily.nutinoSans,
           fontSize: FontSize.BIG,
         ),
         Container(

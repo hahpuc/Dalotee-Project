@@ -38,8 +38,8 @@ class DailySelectedPage extends StatelessWidget {
 
   Widget _buildCard(BuildContext context) {
     CardData card = CardData(
-        front: Assets.images.theFoolCard.path,
-        back: Assets.images.backCard.path);
+        front: Assets.images.imgTheFoolCard.path,
+        back: Assets.images.imgBackCard.path);
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

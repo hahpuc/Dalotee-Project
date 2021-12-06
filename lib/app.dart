@@ -62,10 +62,10 @@ class MyApp extends StatelessWidget {
     return ThemeData(
         scaffoldBackgroundColor: Colors.white,
         primarySwatch: Colors.blue,
-        fontFamily: FontFamily.poppins,
+        fontFamily: FontFamily.nutinoSans,
         textTheme: Theme.of(context).textTheme.apply(
             bodyColor: AppColor.colorTextNormal,
-            fontFamily: FontFamily.poppins),
+            fontFamily: FontFamily.nutinoSans),
         appBarTheme: AppBarTheme(
           systemOverlayStyle: SystemUiOverlayStyle.light,
         ));
