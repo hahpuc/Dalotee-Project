@@ -26,19 +26,11 @@ class Routes {
         return MaterialPageRoute(
             builder: (_) => DailyPage(), settings: settings);
       case RoutePaths.DAILY_SELECTED:
-        CardData card = settings.arguments as CardData;
         return MaterialPageRoute(
-            builder: (_) => DailySelectedPage(
-                  cardChosen: card,
-                ),
-            settings: settings);
+            builder: (_) => DailySelectedPage(), settings: settings);
       case RoutePaths.DAILY_DETAIL:
-        CardData card = settings.arguments as CardData;
         return MaterialPageRoute(
-            builder: (_) => DailyDetailPage(
-                  card: card,
-                ),
-            settings: settings);
+            builder: (_) => DailyDetailPage(), settings: settings);
       case RoutePaths.SPREAD_LIST_QUESTION:
         String question = settings.arguments as String;
         return MaterialPageRoute(
