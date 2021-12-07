@@ -1,8 +1,6 @@
 import 'package:dalotee/configs/routes.dart';
 import 'package:dalotee/data/model/response/card_model.dart';
-import 'package:dalotee/generated/assets/assets.gen.dart';
 import 'package:dalotee/generated/assets/fonts.gen.dart';
-import 'package:dalotee/presentation/pages/daily_tab/data.dart';
 import 'package:dalotee/presentation/widgets/base/app_back_button.dart';
 import 'package:dalotee/presentation/widgets/base/custom_appbar.dart';
 import 'package:dalotee/presentation/widgets/base/custom_button.dart';

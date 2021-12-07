@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dalotee/common/mixins/after_layout.dart';
 import 'package:dalotee/configs/routes.dart';
 import 'package:dalotee/configs/service_locator.dart';

@@ -1,7 +1,4 @@
 import 'package:dalotee/data/app_repository.dart';
-import 'package:dalotee/data/model/response/card_model.dart';
-import 'package:dalotee/generated/assets/assets.gen.dart';
-import 'package:dalotee/presentation/pages/daily_tab/data.dart';
 import 'package:dalotee/presentation/pages/spread_tab/spread_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
