@@ -2,7 +2,6 @@ import 'package:dalotee/configs/routes.dart';
 import 'package:dalotee/data/model/response/card_model.dart';
 import 'package:dalotee/generated/assets/assets.gen.dart';
 import 'package:dalotee/generated/assets/fonts.gen.dart';
-import 'package:dalotee/presentation/pages/daily_tab/data.dart';
 import 'package:dalotee/presentation/pages/daily_tab/widget/keyword_widget.dart';
 import 'package:dalotee/presentation/widgets/base/custom_appbar.dart';
 import 'package:dalotee/presentation/widgets/base/custom_text.dart';
@@ -10,15 +9,14 @@ import 'package:dalotee/values/dimens.dart';
 import 'package:dalotee/values/font_sizes.dart';
 import 'package:flutter/material.dart';
 
-class DailyDetailPage extends StatefulWidget {
-  CardData? card;
-  DailyDetailPage({Key? key, this.card}) : super(key: key);
+class CardDetailPage extends StatefulWidget {
+  CardDetailPage({Key? key}) : super(key: key);
 
   @override
-  _DailyDetailPageState createState() => _DailyDetailPageState();
+  _CardDetailPageState createState() => _CardDetailPageState();
 }
 
-class _DailyDetailPageState extends State<DailyDetailPage> {
+class _CardDetailPageState extends State<CardDetailPage> {
   List<String> keywordList = [
     'Sự khởi đầu mới',
     'Niềm tin',
@@ -27,16 +25,20 @@ class _DailyDetailPageState extends State<DailyDetailPage> {
   ];
   @override
   Widget build(BuildContext context) {
+    var arg = ModalRoute.of(context)!.settings.arguments as List;
+    CardData card = arg[0];
+    String titleAppBar = arg[1];
+
     return Scaffold(
-      appBar: _buildAppBar(),
-      body: _buildBody(),
+      appBar: _buildAppBar(titleAppBar),
+      body: _buildBody(titleAppBar, card),
     );
   }
 
-  _buildAppBar() {
+  _buildAppBar(String title) {
     return CustomAppBar(
       title: CustomText(
-        'Thông điệp mỗi ngày',
+        title,
         fontFamily: FontFamily.gelasio,
         fontSize: FontSize.BIG,
       ),
@@ -49,7 +51,7 @@ class _DailyDetailPageState extends State<DailyDetailPage> {
     );
   }
 
-  _buildBody() {
+  _buildBody(String title, CardData card) {
     return CustomScrollView(
       slivers: [
         SliverToBoxAdapter(
@@ -59,7 +61,7 @@ class _DailyDetailPageState extends State<DailyDetailPage> {
           child: _buildKeyword(card),
         ),
         SliverToBoxAdapter(
-          child: _buildDescription(card),
+          child: _buildDescription(title, card),
         )
       ],
     );
@@ -92,7 +94,12 @@ class _DailyDetailPageState extends State<DailyDetailPage> {
     );
   }
 
-  _buildDescription(CardData card) {
+  _buildDescription(String title, CardData card) {
+    String description = '';
+    title == 'Ý nghĩa lá bài'
+        ? description = card.meaning ?? ''
+        : description = card.description ?? '';
+    print(card.meaning);
     return Container(
       margin: EdgeInsets.all(AppDimen.spacing_2),
       child: CustomText(

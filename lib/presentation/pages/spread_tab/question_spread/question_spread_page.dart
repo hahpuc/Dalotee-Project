@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dalotee/configs/routes.dart';
 import 'package:dalotee/generated/assets/assets.gen.dart';
 import 'package:dalotee/generated/assets/fonts.gen.dart';
@@ -11,19 +9,20 @@ import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class QuestionSpreadPage extends StatelessWidget {
-  String? question;
-  QuestionSpreadPage({Key? key, this.question}) : super(key: key);
+  QuestionSpreadPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    String question = ModalRoute.of(context)!.settings.arguments as String;
+
     return Scaffold(
       backgroundColor: AppColor.colorPrimary,
-      appBar: _buildAppbar(context),
+      appBar: _buildAppbar(context, question),
       body: _buildBody(),
     );
   }
 
-  _buildAppbar(BuildContext context) {
+  _buildAppbar(BuildContext context, String? question) {
     return CustomAppBar(
       title: CustomText(question ?? '',
           fontFamily: FontFamily.gelasio, fontSize: AppDimen.sizeAppBarText),
@@ -68,7 +67,11 @@ class QuestionSpreadPage extends StatelessWidget {
                       children: [
                         Row(
                           children: [
-                            CustomText('${index + 1}.\t'),
+                            CustomText(
+                              '${index + 1}.\t',
+                              fontSize: AppDimen.sizeTextSmall,
+                              fontFamily: FontFamily.nutinoSans,
+                            ),
                             Container(
                               width: MediaQuery.of(context).size.width * 0.8,
                               child: CustomText(

@@ -47,11 +47,8 @@ class _DailyPageState extends State<DailyPage> with AfterLayoutMixin {
   CustomAppBar _buildAppBar() {
     return CustomAppBar(
       leading: Container(),
-      title: CustomText(
-        "Thông điệp mỗi ngày",
-        fontFamily: FontFamily.gelasio,
-        fontSize: FontSize.BIG,
-      ),
+      title: CustomText("Thông điệp mỗi ngày",
+          fontFamily: FontFamily.gelasio, fontSize: AppDimen.sizeAppBarText),
     );
   }
 

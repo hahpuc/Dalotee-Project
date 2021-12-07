@@ -14,8 +14,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class SpreadCardPage extends StatefulWidget {
-  String? question;
-  SpreadCardPage({Key? key, this.question}) : super(key: key);
+  SpreadCardPage({Key? key}) : super(key: key);
 
   @override
   _SpreadCardPageState createState() => _SpreadCardPageState();
@@ -31,10 +30,12 @@ class _SpreadCardPageState extends State<SpreadCardPage> {
 
   @override
   Widget build(BuildContext context) {
+    String question = ModalRoute.of(context)!.settings.arguments as String;
+
     return Scaffold(
       backgroundColor: AppColor.colorPrimary,
       appBar: _buildAppbar(),
-      body: _buildBody(),
+      body: _buildBody(question),
     );
   }
 
@@ -51,7 +52,7 @@ class _SpreadCardPageState extends State<SpreadCardPage> {
     );
   }
 
-  _buildBody() {
+  _buildBody(String? question) {
     List<CardData> listCard = [card, card, card];
     return CustomScrollView(
       slivers: [
@@ -61,7 +62,7 @@ class _SpreadCardPageState extends State<SpreadCardPage> {
             padding: EdgeInsets.symmetric(horizontal: AppDimen.spacing_2),
             child: Center(
               child: CustomText(
-                widget.question ?? '',
+                question ?? '',
                 fontFamily: FontFamily.gelasio,
                 fontWeight: FontWeight.bold,
                 fontSize: FontSize.BIG,

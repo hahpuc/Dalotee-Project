@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:dalotee/common/mixins/after_layout.dart';
+import 'package:dalotee/configs/routes.dart';
 import 'package:dalotee/configs/service_locator.dart';
 import 'package:dalotee/data/model/response/card_model.dart';
 import 'package:dalotee/generated/assets/assets.gen.dart';
@@ -15,7 +16,6 @@ import 'package:dalotee/values/dimens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class SearchPage extends StatefulWidget {
   @override
@@ -27,8 +27,15 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> with AfterLayoutMixin {
   SearchPageBloc _bloc = SearchPageBloc(appRepository: locator.get());
   TextEditingController _controllerSearch = TextEditingController();
-  int _currentIndex = 1;
+  // int _currentIndex = 1;
   List<String> categories = [
+    Assets.images.icKingPng.path,
+    Assets.images.imgWands.path,
+    Assets.images.imgSword.path,
+    Assets.images.imgCups.path,
+    Assets.images.imgCoin.path,
+  ];
+  List<String> categoriesName = [
     'Major Arcana',
     'Cup',
     'Pentacles',
@@ -38,8 +45,10 @@ class _SearchPageState extends State<SearchPage> with AfterLayoutMixin {
   ValueNotifier<List<CardData>?> listCardSearch =
       ValueNotifier<List<CardData>?>(null);
 
-  // Size of Animated Photo
+  // Size of Animated
   ValueNotifier<double> sizeAnimatedContainer = ValueNotifier<double>(0);
+
+  ValueNotifier<int> _currentIndex = ValueNotifier<int>(0);
 
   @override
   void afterFirstFrame(BuildContext context) {
@@ -55,6 +64,19 @@ class _SearchPageState extends State<SearchPage> with AfterLayoutMixin {
   }
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controllerSearch.dispose();
+    sizeAnimatedContainer.dispose();
+    listCardSearch.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: categories.length,
@@ -63,19 +85,12 @@ class _SearchPageState extends State<SearchPage> with AfterLayoutMixin {
           final TabController tabController = DefaultTabController.of(context)!;
           tabController.addListener(() {
             if (!tabController.indexIsChanging) {
-              setState(() {
-                _currentIndex = tabController.index;
-              });
+              _currentIndex.value = tabController.index;
             }
           });
           return Scaffold(
             backgroundColor: AppColor.colorPrimary,
             appBar: _buildAppBar(),
-            // body: TabBarView(
-            //   children: [
-            //     for (int i = 0; i < 5; i++) _buildListCard(categories[i])
-            //   ],
-            // ),
             body: Container(
               child: ValueListenableBuilder<double>(
                   valueListenable: sizeAnimatedContainer,
@@ -97,7 +112,7 @@ class _SearchPageState extends State<SearchPage> with AfterLayoutMixin {
                       return TabBarView(
                         children: [
                           for (int i = 0; i < 5; i++)
-                            _buildListCard(categories[i])
+                            _buildListCard(categoriesName[i])
                         ],
                       );
                     }
@@ -111,24 +126,41 @@ class _SearchPageState extends State<SearchPage> with AfterLayoutMixin {
 
   CustomAppBar _buildAppBar() {
     return CustomAppBar(
-      title: Text("Tra cứu lá bài"),
+      title: CustomText("Tra cứu lá bài",
+          fontFamily: FontFamily.gelasio, fontSize: AppDimen.sizeAppBarText),
       leading: SizedBox(),
       bottom: PreferredSize(
-        preferredSize: Size(0, 84),
+        preferredSize: Size(0, 125),
         child: Column(
           children: [
-            TabBar(
-                isScrollable: true,
-                indicatorColor: Colors.transparent,
-                tabs: [
-                  for (final item in categories)
-                    Center(
-                      child: CustomText(
-                        item,
-                        color: Colors.black,
-                      ),
-                    )
-                ]),
+            Container(
+              padding: EdgeInsets.symmetric(
+                  vertical: AppDimen.spacing_1, horizontal: AppDimen.spacing_4),
+              decoration: BoxDecoration(
+                  color: AppColor.colorButton,
+                  borderRadius: BorderRadius.circular(AppDimen.spacing_2)),
+              child: TabBar(
+                  isScrollable: true,
+                  indicator: BoxDecoration(color: Colors.transparent),
+                  tabs: [
+                    for (int i = 0; i < categories.length; i++)
+                      ValueListenableBuilder<int>(
+                          valueListenable: _currentIndex,
+                          builder:
+                              (BuildContext context, int value, Widget? child) {
+                            return Center(
+                              child: Image.asset(
+                                categories[i],
+                                width: AppDimen.spacing_4,
+                                height: AppDimen.spacing_4,
+                                color: value == i
+                                    ? AppColor.colorSelected
+                                    : AppColor.colorUnselected,
+                              ),
+                            );
+                          })
+                  ]),
+            ),
             _buildSearchBar()
           ],
         ),
@@ -140,6 +172,7 @@ class _SearchPageState extends State<SearchPage> with AfterLayoutMixin {
     return Container(
       margin: EdgeInsets.symmetric(
           vertical: AppDimen.spacing_2, horizontal: AppDimen.spacing_3),
+      padding: EdgeInsets.symmetric(vertical: AppDimen.spacing_1),
       decoration: BoxDecoration(
           color: AppColor.colorButton,
           borderRadius: BorderRadius.circular(AppDimen.spacing_2)),
@@ -148,8 +181,7 @@ class _SearchPageState extends State<SearchPage> with AfterLayoutMixin {
           Row(
             children: [
               Expanded(
-                  flex: 1,
-                  child: SvgPicture.asset(Assets.images.icSearch.path)),
+                  flex: 1, child: Icon(Icons.search, size: AppDimen.spacing_3)),
               Expanded(
                 flex: 8,
                 child: CustomTextField(
@@ -159,12 +191,10 @@ class _SearchPageState extends State<SearchPage> with AfterLayoutMixin {
                     text = convertToTitleCase(text);
                     List<CardData>? list = _bloc.getCardWithName(text);
                     if (list!.isNotEmpty) {
-                      log(list.toString());
                       listCardSearch.value = list;
                       sizeAnimatedContainer.value =
                           MediaQuery.of(context).size.height;
                     } else {
-                      log('sssssssssssssssssssssssssssssss');
                       sizeAnimatedContainer.value = 0;
                     }
                   },
@@ -222,27 +252,32 @@ class _SearchPageState extends State<SearchPage> with AfterLayoutMixin {
           itemBuilder: (BuildContext context, int index) {
             if (list != null) {
               final item = list[index];
-              return Center(
-                child: Container(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Image.asset(
-                        item.front,
-                      ),
-                      Container(
-                        margin:
-                            EdgeInsets.symmetric(vertical: AppDimen.spacing_2),
-                        child: Center(
-                            child: CustomText(
-                          item.name ?? "",
-                          fontSize: 16.0,
-                          fontFamily: FontFamily.poppins,
-                          fontWeight: FontWeight.bold,
-                        )),
-                      )
-                    ],
+              return InkWell(
+                onTap: () => Navigator.pushNamed(
+                    context, RoutePaths.CARD_DETAIL,
+                    arguments: [item, 'Ý nghĩa lá bài']),
+                child: Center(
+                  child: Container(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Image.asset(
+                          item.front,
+                        ),
+                        Container(
+                          margin: EdgeInsets.symmetric(
+                              vertical: AppDimen.spacing_2),
+                          child: Center(
+                              child: CustomText(
+                            item.name ?? "",
+                            fontSize: 16.0,
+                            fontFamily: FontFamily.poppins,
+                            fontWeight: FontWeight.bold,
+                          )),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               );

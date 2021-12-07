@@ -14,7 +14,6 @@ import 'package:dalotee/values/dimens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_svg/svg.dart';
 
 class SpreadPage extends StatefulWidget {
   @override
@@ -25,13 +24,21 @@ class SpreadPage extends StatefulWidget {
 
 class _SpreadPageState extends State<SpreadPage> with AfterLayoutMixin {
   SpreadPageBloc _bloc = SpreadPageBloc(appRepository: locator.get());
-  List<String> categories = ['Love', 'Work', 'Money', 'Study', 'Prophecy'];
+  List<String> categoriesName = ['Love', 'Work', 'Money', 'Study', 'Prophecy'];
+  List<String> categories = [
+    Assets.images.icLove.path,
+    Assets.images.icCareer.path,
+    Assets.images.icMoney.path,
+    Assets.images.icStudy.path,
+    Assets.images.icProphecy.path,
+  ];
   List<String> iconSpread = [
     Assets.images.imgCardSpreadLeft.path,
     Assets.images.imgCardSpreadRight.path,
     Assets.images.imgOneCardSpread.path,
     Assets.images.imgOneCardSpread.path
   ];
+  ValueNotifier<int> _currentIndex = ValueNotifier<int>(0);
 
   @override
   void afterFirstFrame(BuildContext context) {
@@ -52,6 +59,12 @@ class _SpreadPageState extends State<SpreadPage> with AfterLayoutMixin {
       length: categories.length,
       child: Builder(
         builder: (BuildContext context) {
+          final TabController tabController = DefaultTabController.of(context)!;
+          tabController.addListener(() {
+            if (!tabController.indexIsChanging) {
+              _currentIndex.value = tabController.index;
+            }
+          });
           return Scaffold(
               backgroundColor: AppColor.colorPrimary,
               appBar: _buildAppBar(),
@@ -67,7 +80,7 @@ class _SpreadPageState extends State<SpreadPage> with AfterLayoutMixin {
 
   CustomAppBar _buildAppBar() {
     return CustomAppBar(
-      title: CustomText("Tra cứu lá bài",
+      title: CustomText("Trải bài",
           fontFamily: FontFamily.gelasio, fontSize: AppDimen.sizeAppBarText),
       leading: SizedBox(),
       bottom: PreferredSize(
@@ -79,22 +92,27 @@ class _SpreadPageState extends State<SpreadPage> with AfterLayoutMixin {
           decoration: BoxDecoration(
               color: AppColor.colorButton,
               borderRadius: BorderRadius.circular(AppDimen.spacing_2)),
-          child: Column(
-            children: [
-              TabBar(
-                  isScrollable: true,
-                  indicatorColor: Colors.transparent,
-                  tabs: [
-                    for (final item in categories)
-                      Center(
-                        child: CustomText(
-                          item,
-                          color: Colors.black,
-                        ),
-                      )
-                  ]),
-            ],
-          ),
+          child: TabBar(
+              isScrollable: true,
+              indicator: BoxDecoration(color: Colors.transparent),
+              tabs: [
+                for (int i = 0; i < categories.length; i++)
+                  ValueListenableBuilder<int>(
+                      valueListenable: _currentIndex,
+                      builder:
+                          (BuildContext context, int value, Widget? child) {
+                        return Center(
+                          child: Image.asset(
+                            categories[i],
+                            width: AppDimen.spacing_4,
+                            height: AppDimen.spacing_4,
+                            color: value == i
+                                ? AppColor.colorSelected
+                                : AppColor.colorUnselected,
+                          ),
+                        );
+                      })
+              ]),
         ),
       ),
     );

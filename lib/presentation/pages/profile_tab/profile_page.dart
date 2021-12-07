@@ -91,13 +91,25 @@ class _ProfilePageState extends State<ProfilePage> with AfterLayoutMixin {
   }
 
   _buildAvatar(UserResponseData user) {
-    return Container(
-      margin: EdgeInsets.only(top: AppDimen.spacing_3),
-      child: ClipOval(
-        child: Image.network(user.avatar!,
-            width: 100, height: 100, fit: BoxFit.cover),
-      ),
-    );
+    if (user.avatar != null) {
+      return Container(
+        margin: EdgeInsets.only(top: AppDimen.spacing_3),
+        child: ClipOval(
+          child: Image.network(user.avatar!,
+              width: 100, height: 100, fit: BoxFit.cover),
+        ),
+      );
+    } else {
+      return CircleAvatar(
+        backgroundColor: AppColor.colorPrimary,
+        maxRadius: 100,
+        child: Center(
+            child: Icon(
+          Icons.supervised_user_circle,
+          color: Colors.white,
+        )),
+      );
+    }
   }
 
   _buildName(UserResponseData user) {

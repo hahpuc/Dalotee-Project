@@ -67,8 +67,8 @@ class _DailySelectedPageState extends State<DailySelectedPage> {
               vertical: AppDimen.spacing_2,
               horizontal: AppDimen.spacing_large,
             ),
-            onTap: () => Navigator.pushNamed(context, RoutePaths.DAILY_DETAIL,
-                arguments: card),
+            onTap: () => Navigator.pushNamed(context, RoutePaths.CARD_DETAIL,
+                arguments: [card, 'Thông điệp mỗi ngày']),
           )
         ],
       ),

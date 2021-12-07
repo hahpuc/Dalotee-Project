@@ -7,6 +7,7 @@ class CardData {
   final String front;
   final String back;
   final String? description;
+  final String? meaning;
   final String? category;
 
   CardData(
@@ -14,6 +15,7 @@ class CardData {
       required this.front,
       required this.back,
       this.description,
+      this.meaning,
       this.category});
   factory CardData.fromMap(Map<String, dynamic> map) {
     return CardData(
