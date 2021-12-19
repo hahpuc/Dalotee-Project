@@ -17,6 +17,12 @@ class DemoResponse extends BaseResponseData<DemoResponseData> {
   Map<String, dynamic> toMap() {
     return {"userId": this.userId, "id": this.id, "title": this.title};
   }
+
+  @override
+  DemoResponseData parseData(data) {
+    // TODO: implement parseData
+    throw UnimplementedError();
+  }
 }
 
 class DemoResponseData {}

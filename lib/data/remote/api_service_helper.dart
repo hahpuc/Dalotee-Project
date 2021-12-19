@@ -58,6 +58,12 @@ class ApiServiceHelper {
     final response = await _client
         .get(Uri.parse(url), headers: headers)
         .timeout(Duration(seconds: ApiConfigs.TIME_OUT_SECONDS));
+
+    print("----> Url: $url");
+    print("----> Method: GET");
+    print("----> Headers: $headers");
+    print("-----> Response ${response.body}");
+
     responseJson = _checkHttpResponse(response);
     return responseJson;
   }
@@ -75,6 +81,13 @@ class ApiServiceHelper {
     final response = await _client
         .post(Uri.parse(url), headers: headers, body: body, encoding: encoding)
         .timeout(Duration(seconds: ApiConfigs.TIME_OUT_SECONDS));
+
+    print("----> Url: $url");
+    print("----> Method: POST");
+    print("----> Headers: $headers");
+    print("----> Body: $body");
+    print("-----> Response ${response.body}");
+
     responseJson = _checkHttpResponse(response);
     return responseJson;
   }

@@ -2,6 +2,7 @@ import 'package:dalotee/common/mixins/after_layout.dart';
 import 'package:dalotee/configs/routes.dart';
 import 'package:dalotee/configs/service_locator.dart';
 import 'package:dalotee/data/model/response/card_model.dart';
+import 'package:dalotee/data/model/response/card_response.dart';
 import 'package:dalotee/generated/assets/assets.gen.dart';
 import 'package:dalotee/generated/assets/fonts.gen.dart';
 import 'package:dalotee/presentation/pages/search_tab/search_bloc.dart';
@@ -13,7 +14,16 @@ import 'package:dalotee/values/colors.dart';
 import 'package:dalotee/values/dimens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+
+class CategoryCardID {
+  static const String MajorArcana = "61b6f29a131b1d0eee3cea91";
+  static const String Cups = "61b6f29d131b1d0eee3cea94";
+  static const String Swords = "61b6f2a9131b1d0eee3cea97";
+  static const String Wands = "61b6f2ad131b1d0eee3cea9a";
+  static const String Pentacles = "61b6f2b1131b1d0eee3cea9d";
+}
 
 class SearchPage extends StatefulWidget {
   @override
@@ -24,6 +34,7 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> with AfterLayoutMixin {
   SearchPageBloc _bloc = SearchPageBloc(appRepository: locator.get());
+
   TextEditingController _controllerSearch = TextEditingController();
   // int _currentIndex = 1;
   List<String> categories = [
@@ -33,12 +44,12 @@ class _SearchPageState extends State<SearchPage> with AfterLayoutMixin {
     Assets.images.imgCups.path,
     Assets.images.imgCoin.path,
   ];
-  List<String> categoriesName = [
-    'Major Arcana',
-    'Cup',
-    'Pentacles',
-    'Swords',
-    'Wands'
+  List<String> categoryIds = [
+    CategoryCardID.MajorArcana,
+    CategoryCardID.Wands,
+    CategoryCardID.Swords,
+    CategoryCardID.Cups,
+    CategoryCardID.Pentacles,
   ];
   ValueNotifier<List<CardData>?> listCardSearch =
       ValueNotifier<List<CardData>?>(null);
@@ -50,7 +61,7 @@ class _SearchPageState extends State<SearchPage> with AfterLayoutMixin {
 
   @override
   void afterFirstFrame(BuildContext context) {
-    _bloc.getData();
+    // _bloc.getData();
   }
 
   _blocListener(BuildContext context, SearchPageState state) async {
@@ -84,6 +95,8 @@ class _SearchPageState extends State<SearchPage> with AfterLayoutMixin {
           tabController.addListener(() {
             if (!tabController.indexIsChanging) {
               _currentIndex.value = tabController.index;
+
+              //   _bloc.getCardWithCategories(categoryIds);
             }
           });
           return Scaffold(
@@ -103,14 +116,14 @@ class _SearchPageState extends State<SearchPage> with AfterLayoutMixin {
                               valueListenable: listCardSearch,
                               builder: (BuildContext context,
                                   List<CardData>? listCard, Widget? child) {
-                                return _buildGridView(listCardSearch.value);
+                                return _buildGridView([]);
                               }));
                     }
                     {
                       return TabBarView(
                         children: [
                           for (int i = 0; i < 5; i++)
-                            _buildListCard(categoriesName[i])
+                            _buildListCard(categoryIds[i])
                         ],
                       );
                     }
@@ -128,7 +141,7 @@ class _SearchPageState extends State<SearchPage> with AfterLayoutMixin {
           fontFamily: FontFamily.gelasio, fontSize: AppDimen.sizeAppBarText),
       leading: SizedBox(),
       bottom: PreferredSize(
-        preferredSize: Size(0, 125),
+        preferredSize: Size(0, 50),
         child: Column(
           children: [
             Container(
@@ -159,51 +172,52 @@ class _SearchPageState extends State<SearchPage> with AfterLayoutMixin {
                           })
                   ]),
             ),
-            _buildSearchBar()
+            SizedBox(height: 16.0)
+            // _buildSearchBar()
           ],
         ),
       ),
     );
   }
 
-  _buildSearchBar() {
-    return Container(
-      margin: EdgeInsets.symmetric(
-          vertical: AppDimen.spacing_2, horizontal: AppDimen.spacing_3),
-      padding: EdgeInsets.symmetric(vertical: AppDimen.spacing_1),
-      decoration: BoxDecoration(
-          color: AppColor.colorButton,
-          borderRadius: BorderRadius.circular(AppDimen.spacing_2)),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Expanded(
-                  flex: 1, child: Icon(Icons.search, size: AppDimen.spacing_3)),
-              Expanded(
-                flex: 8,
-                child: CustomTextField(
-                  textController: _controllerSearch,
-                  hintText: 'Tìm kiếm...',
-                  onSubmittedListener: (text) {
-                    text = convertToTitleCase(text);
-                    List<CardData>? list = _bloc.getCardWithName(text);
-                    if (list!.isNotEmpty) {
-                      listCardSearch.value = list;
-                      sizeAnimatedContainer.value =
-                          MediaQuery.of(context).size.height;
-                    } else {
-                      sizeAnimatedContainer.value = 0;
-                    }
-                  },
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
+//   _buildSearchBar() {
+//     return Container(
+//       margin: EdgeInsets.symmetric(
+//           vertical: AppDimen.spacing_2, horizontal: AppDimen.spacing_3),
+//       padding: EdgeInsets.symmetric(vertical: AppDimen.spacing_1),
+//       decoration: BoxDecoration(
+//           color: AppColor.colorButton,
+//           borderRadius: BorderRadius.circular(AppDimen.spacing_2)),
+//       child: Column(
+//         children: [
+//           Row(
+//             children: [
+//               Expanded(
+//                   flex: 1, child: Icon(Icons.search, size: AppDimen.spacing_3)),
+//               Expanded(
+//                 flex: 8,
+//                 child: CustomTextField(
+//                   textController: _controllerSearch,
+//                   hintText: 'Tìm kiếm...',
+//                   onSubmittedListener: (text) {
+//                     text = convertToTitleCase(text);
+//                     List<CardData>? list = _bloc.getCardWithName(text);
+//                     if (list!.isNotEmpty) {
+//                       listCardSearch.value = list;
+//                       sizeAnimatedContainer.value =
+//                           MediaQuery.of(context).size.height;
+//                     } else {
+//                       sizeAnimatedContainer.value = 0;
+//                     }
+//                   },
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ],
+//       ),
+//     );
+//   }
 
   String? convertToTitleCase(String? text) {
     if (text == null) {
@@ -232,12 +246,28 @@ class _SearchPageState extends State<SearchPage> with AfterLayoutMixin {
     return capitalizedWords.join(' ');
   }
 
-  _buildListCard(String category) {
-    List<CardData>? list = _bloc.getCardWithCategories(category);
-    return _buildGridView(list);
+  Widget _buildListCard(String category) {
+    List<CardResponseModel>? list;
+
+    return BlocProvider(
+      create: (context) => _bloc,
+      child: BlocListener<SearchPageBloc, SearchPageState>(
+        listener: _blocListener,
+        child: BlocBuilder<SearchPageBloc, SearchPageState>(
+          bloc: _bloc,
+          builder: (context, state) {
+            if (state is SearchPageGetDataSuccessState) {
+              list = state.data;
+              return _buildGridView(list ?? []);
+            }
+            return Container();
+          },
+        ),
+      ),
+    );
   }
 
-  _buildGridView(List<CardData>? list) {
+  _buildGridView(List<CardResponseModel>? list) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: AppDimen.spacing_2),
       child: GridView.builder(
@@ -249,7 +279,7 @@ class _SearchPageState extends State<SearchPage> with AfterLayoutMixin {
               mainAxisExtent: 280),
           itemBuilder: (BuildContext context, int index) {
             if (list != null) {
-              final item = list[index];
+              CardResponseModel item = list[index];
               return InkWell(
                 onTap: () => Navigator.pushNamed(
                     context, RoutePaths.CARD_DETAIL,
@@ -260,8 +290,14 @@ class _SearchPageState extends State<SearchPage> with AfterLayoutMixin {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Image.asset(
-                          item.front,
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.0),
+                            image: DecorationImage(
+                                image: NetworkImage(
+                                    item.images?[0].imageUrl ?? ''),
+                                fit: BoxFit.cover),
+                          ),
                         ),
                         Container(
                           margin: EdgeInsets.symmetric(

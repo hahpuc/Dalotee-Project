@@ -1,4 +1,5 @@
 import 'package:dalotee/data/model/response/base/base_response.dart';
+import 'package:dalotee/data/model/response/card_response.dart';
 import 'package:dalotee/data/model/response/demo_response.dart';
 import 'package:dalotee/data/remote/api_service_helper.dart';
 
@@ -8,6 +9,7 @@ class ApiConfigs {
 
 class ApiPath {
   static const DEMO = "/v1/abc";
+  static const GET_CARD_BY_CATEGORY = "/card/category/";
 }
 
 class ApiService {
@@ -22,6 +24,16 @@ class ApiService {
           url: 'https://jsonplaceholder.typicode.com/albums/1');
       // Parse data here to BaseResponse
       return DemoResponse.fromMap(response);
+    });
+  }
+
+  Future<Result<GetCardByCategoryResponse, Exception>> getCardByCategory(
+      String categoryId) async {
+    return _apiServiceHelper.handleResponse(request: () async {
+      var response = await _apiServiceHelper.get(
+          url: baseUrl + ApiPath.GET_CARD_BY_CATEGORY + categoryId);
+
+      return GetCardByCategoryResponse().tryParse(response);
     });
   }
 }

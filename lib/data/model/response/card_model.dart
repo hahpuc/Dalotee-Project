@@ -1,6 +1,12 @@
 import 'package:dalotee/data/model/response/base/base_response.dart';
 
-class Card extends BaseResponseData<CardData> {}
+class Card extends BaseResponseData<CardData> {
+  @override
+  CardData parseData(data) {
+    // TODO: implement parseData
+    throw UnimplementedError();
+  }
+}
 
 class CardData {
   final String? name;
