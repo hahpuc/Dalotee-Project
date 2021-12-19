@@ -21,7 +21,11 @@ class KeywordWidget extends StatelessWidget {
         vertical: 5,
         horizontal: 20,
       ),
-      child: CustomText(keyword),
+      child: Column(
+        children: [
+          CustomText(keyword),
+        ],
+      ),
     );
   }
 }

@@ -134,7 +134,7 @@ class _DailySelectedPageState extends State<DailySelectedPage>
                       ),
                       onTap: () => Navigator.pushNamed(
                           context, RoutePaths.CARD_DETAIL,
-                          arguments: []),
+                          arguments: cardDetail),
                     )
                   ],
                 ),

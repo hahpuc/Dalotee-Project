@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:dalotee/data/exceptions/api_exception.dart';
 import 'package:dalotee/data/exceptions/app_exception.dart';
@@ -65,7 +66,7 @@ class ApiServiceHelper {
     print("----> Url: $url");
     print("----> Method: GET");
     print("----> Headers: $headers");
-    print("-----> Response ${response.body}");
+    log("-----> Response ${response.body}");
     responseJson = _checkHttpResponse(response);
     return responseJson;
   }

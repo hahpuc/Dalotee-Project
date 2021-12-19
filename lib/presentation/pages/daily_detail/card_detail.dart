@@ -1,11 +1,11 @@
 import 'package:dalotee/configs/routes.dart';
-import 'package:dalotee/data/model/response/card_model.dart';
+import 'package:dalotee/data/model/response/get_card_category_response.dart';
 import 'package:dalotee/generated/assets/assets.gen.dart';
 import 'package:dalotee/generated/assets/fonts.gen.dart';
 import 'package:dalotee/presentation/pages/daily_tab/widget/keyword_widget.dart';
 import 'package:dalotee/presentation/widgets/base/custom_appbar.dart';
 import 'package:dalotee/presentation/widgets/base/custom_text.dart';
-import 'package:dalotee/values/dimens.dart';
+import 'package:dalotee/values/colors.dart';
 import 'package:dalotee/values/font_sizes.dart';
 import 'package:flutter/material.dart';
 
@@ -17,21 +17,17 @@ class CardDetailPage extends StatefulWidget {
 }
 
 class _CardDetailPageState extends State<CardDetailPage> {
-  List<String> keywordList = [
-    'Sự khởi đầu mới',
-    'Niềm tin',
-    'Tự phát',
-    'Sự điên rồ'
-  ];
+  List<KeyWordData> keywordList = [];
   @override
   Widget build(BuildContext context) {
-    var arg = ModalRoute.of(context)!.settings.arguments as List;
-    CardData card = arg[0];
-    String titleAppBar = arg[1];
+    var card = ModalRoute.of(context)!.settings.arguments as CardResponseModel;
+    // CardData card = arg[0];
+    // String titleAppBar = arg[1];
 
     return Scaffold(
-      appBar: _buildAppBar(titleAppBar),
-      body: _buildBody(titleAppBar, card),
+      backgroundColor: AppColor.colorPrimary,
+      appBar: _buildAppBar(card.name ?? 'Card Name'),
+      body: _buildBody(card.name ?? 'Card Name', card),
     );
   }
 
@@ -45,13 +41,13 @@ class _CardDetailPageState extends State<CardDetailPage> {
       leading: IconButton(
         icon: Assets.images.icBack.svg(),
         onPressed: () {
-          Navigator.pushNamed(context, RoutePaths.BOTTOM_NAVIGATION);
+          Navigator.popUntil(context, (Route<dynamic> route) => route.isFirst);
         },
       ),
     );
   }
 
-  _buildBody(String title, CardData card) {
+  _buildBody(String title, CardResponseModel card) {
     return CustomScrollView(
       slivers: [
         SliverToBoxAdapter(
@@ -61,51 +57,77 @@ class _CardDetailPageState extends State<CardDetailPage> {
           child: _buildKeyword(card),
         ),
         SliverToBoxAdapter(
-          child: _buildDescription(title, card),
-        )
+          child: _buildContent('Nội dung: ', card.content ?? 'Content'),
+        ),
+        SliverToBoxAdapter(
+          child: _buildContent('Tiên tri: ', card.prophecy ?? 'Prophecy'),
+        ),
+        SliverToBoxAdapter(
+          child: _buildContent('Lời khuyên: ', card.advice ?? 'Advice'),
+        ),
       ],
     );
   }
 
-  _cardInfo(CardData card) {
+  _cardInfo(CardResponseModel card) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Image.asset(
-          card.front,
-          scale: 2,
+        Container(
+          child: Container(
+            width: 200.0,
+            height: 350.0,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8.0),
+              image: DecorationImage(
+                  image: NetworkImage(card.images?[0].imageUrl ??
+                      "https://i.imgur.com/2njY6VH.jpg"),
+                  fit: BoxFit.cover),
+            ),
+          ),
         ),
-        CustomText(
-          card.name ?? "",
-          fontFamily: FontFamily.gelasio,
-          fontSize: FontSize.BIG_1,
-        )
+        SizedBox(height: 16.0),
       ],
     );
   }
 
-  _buildKeyword(CardData card) {
+  _buildKeyword(CardResponseModel card) {
+    keywordList = card.keyword?.keyword ?? [];
     return Container(
       child: Column(
         children: [
-          for (final item in keywordList) KeywordWidget(keyword: item)
+          for (final item in keywordList)
+            KeywordWidget(keyword: item.title ?? 'Keyword')
         ],
       ),
     );
   }
 
-  _buildDescription(String title, CardData card) {
-    String description = '';
-    title == 'Ý nghĩa lá bài'
-        ? description = card.meaning ?? ''
-        : description = card.description ?? '';
-    print(card.meaning);
+  _buildContent(String title, String? content) {
+    if (content == null || content == "") return Container();
+
     return Container(
-      margin: EdgeInsets.all(AppDimen.spacing_2),
-      child: CustomText(
-        description,
-        maxLine: 100,
-        align: TextAlign.justify,
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Column(
+        children: [
+          SizedBox(height: 16.0),
+          RichText(
+            textAlign: TextAlign.left,
+            text: TextSpan(
+              style: DefaultTextStyle.of(context).style,
+              children: [
+                TextSpan(
+                    text: title,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontFamily: FontFamily.nutinoSans,
+                    )),
+                TextSpan(text: content),
+              ],
+            ),
+          ),
+          SizedBox(height: 16.0),
+        ],
       ),
     );
   }
