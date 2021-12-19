@@ -2,7 +2,7 @@ import 'package:dalotee/common/mixins/after_layout.dart';
 import 'package:dalotee/configs/routes.dart';
 import 'package:dalotee/configs/service_locator.dart';
 import 'package:dalotee/data/model/response/card_model.dart';
-import 'package:dalotee/data/model/response/card_response.dart';
+import 'package:dalotee/data/model/response/get_card_category_response.dart';
 import 'package:dalotee/generated/assets/assets.gen.dart';
 import 'package:dalotee/generated/assets/fonts.gen.dart';
 import 'package:dalotee/presentation/pages/search_tab/search_bloc.dart';

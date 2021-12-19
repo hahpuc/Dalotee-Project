@@ -1,5 +1,5 @@
 import 'package:dalotee/data/local/pref_repository.dart';
-import 'package:dalotee/data/model/response/card_response.dart';
+import 'package:dalotee/data/model/response/get_card_category_response.dart';
 import 'package:dalotee/data/remote/api_service.dart';
 
 import 'model/response/base/base_response.dart';
@@ -14,5 +14,5 @@ class AppRepository {
 
   AppRepository({required this.apiService, required this.prefRepository});
 
-  Future<Result<DemoResponse, Exception>> getDemo() => apiService.getDemo();
+//   Future<Result<DemoResponse, Exception>> getDemo() => apiService.getDemo();
 }

@@ -1,5 +1,5 @@
 import 'package:dalotee/bloc/base/base_state.dart';
-import 'package:dalotee/data/model/response/card_response.dart';
+import 'package:dalotee/data/model/response/get_card_category_response.dart';
 
 class SearchPageState extends BaseState {}
 

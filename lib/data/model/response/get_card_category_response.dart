@@ -40,7 +40,7 @@ class GetCardByCategoryResponseData {
 //-----------
 
 class CardResponseModel {
-  int? id;
+  String? id;
   String? name;
   int? number;
   List<ImagesResponse>? images;

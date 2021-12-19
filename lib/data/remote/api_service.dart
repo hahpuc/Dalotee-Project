@@ -1,5 +1,6 @@
 import 'package:dalotee/data/model/response/base/base_response.dart';
-import 'package:dalotee/data/model/response/card_response.dart';
+import 'package:dalotee/data/model/response/card_detail_response.dart';
+import 'package:dalotee/data/model/response/get_card_category_response.dart';
 import 'package:dalotee/data/model/response/demo_response.dart';
 import 'package:dalotee/data/remote/api_service_helper.dart';
 
@@ -10,6 +11,7 @@ class ApiConfigs {
 class ApiPath {
   static const DEMO = "/v1/abc";
   static const GET_CARD_BY_CATEGORY = "/card/category/";
+  static const GET_CARD_BY_NUMBER = "/card/number/";
 }
 
 class ApiService {
@@ -34,6 +36,16 @@ class ApiService {
           url: baseUrl + ApiPath.GET_CARD_BY_CATEGORY + categoryId);
 
       return GetCardByCategoryResponse().tryParse(response);
+    });
+  }
+
+  Future<Result<GetCardByNumberResponse, Exception>> getCardByNumber(
+      String number) async {
+    return _apiServiceHelper.handleResponse(request: () async {
+      var response = await _apiServiceHelper.get(
+          url: baseUrl + ApiPath.GET_CARD_BY_NUMBER + number);
+
+      return GetCardByNumberResponse().tryParse(response);
     });
   }
 }

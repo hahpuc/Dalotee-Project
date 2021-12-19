@@ -10,6 +10,7 @@ import 'package:dalotee/presentation/pages/daily_tab/daily_state.dart';
 import 'package:dalotee/presentation/pages/daily_tab/data.dart';
 import 'package:dalotee/presentation/widgets/base/custom_appbar.dart';
 import 'package:dalotee/presentation/widgets/base/custom_text.dart';
+import 'package:dalotee/values/app_utils.dart';
 import 'package:dalotee/values/colors.dart';
 import 'package:dalotee/values/dimens.dart';
 import 'package:dalotee/values/font_sizes.dart';
@@ -152,7 +153,7 @@ class _DailyPageState extends State<DailyPage> with AfterLayoutMixin {
               itemBuilder: (BuildContext context, int index) {
                 return InkWell(
                   onTap: () {
-                    print(index);
+                    // print(index);
                     setState(() {
                       _opacity = _opacity == 0 ? 1 : 0;
                       _cardChosen = listCard[index];
