@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:dalotee/common/mixins/after_layout.dart';
 import 'package:dalotee/configs/routes.dart';
 import 'package:dalotee/configs/service_locator.dart';
+import 'package:dalotee/data/model/response/spread/get_content_question_response.dart';
 import 'package:dalotee/generated/assets/assets.gen.dart';
 import 'package:dalotee/generated/assets/fonts.gen.dart';
 import 'package:dalotee/presentation/pages/spread_tab/spread_bloc.dart';
@@ -13,7 +14,16 @@ import 'package:dalotee/values/colors.dart';
 import 'package:dalotee/values/dimens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+
+class SpreadTypeID {
+  static const String Love = "61bcac81c6fc90d1a7437545";
+  static const String Career = "61bcac92c6fc90d1a7437548";
+  static const String Money = "61bcac9ac6fc90d1a743754b";
+  static const String Study = "61bff32455bde8cad2ef6292";
+  static const String Future = "61bcacb0c6fc90d1a743754e";
+}
 
 class SpreadPage extends StatefulWidget {
   @override
@@ -24,8 +34,15 @@ class SpreadPage extends StatefulWidget {
 
 class _SpreadPageState extends State<SpreadPage> with AfterLayoutMixin {
   SpreadPageBloc _bloc = SpreadPageBloc(appRepository: locator.get());
-  List<String> categoriesName = ['Love', 'Work', 'Money', 'Study', 'Prophecy'];
-  List<String> categories = [
+  List<String> contentQuestionsId = [
+    SpreadTypeID.Love,
+    SpreadTypeID.Career,
+    SpreadTypeID.Money,
+    SpreadTypeID.Study,
+    SpreadTypeID.Future,
+  ];
+
+  List<String> contentQuestions = [
     Assets.images.icLove.path,
     Assets.images.icCareer.path,
     Assets.images.icMoney.path,
@@ -42,7 +59,9 @@ class _SpreadPageState extends State<SpreadPage> with AfterLayoutMixin {
 
   @override
   void afterFirstFrame(BuildContext context) {
-    _bloc.getData();
+    // _bloc.getData();
+
+    _bloc.getContentQuestion(contentQuestionsId[0]);
   }
 
   _blocListener(BuildContext context, SpreadPageState state) async {
@@ -55,25 +74,33 @@ class _SpreadPageState extends State<SpreadPage> with AfterLayoutMixin {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: categories.length,
-      child: Builder(
-        builder: (BuildContext context) {
-          final TabController tabController = DefaultTabController.of(context)!;
-          tabController.addListener(() {
-            if (!tabController.indexIsChanging) {
-              _currentIndex.value = tabController.index;
-            }
-          });
-          return Scaffold(
-              backgroundColor: AppColor.colorPrimary,
-              appBar: _buildAppBar(),
-              body: TabBarView(
-                children: [
-                  for (int i = 0; i < 5; i++) _buildListCard(categories[i])
-                ],
-              ));
-        },
+    return BlocProvider(
+      create: (context) => _bloc,
+      child: DefaultTabController(
+        length: contentQuestions.length,
+        child: Builder(
+          builder: (BuildContext context) {
+            final TabController tabController =
+                DefaultTabController.of(context)!;
+            tabController.addListener(() {
+              if (!tabController.indexIsChanging) {
+                _currentIndex.value = tabController.index;
+
+                _bloc.getContentQuestion(
+                    contentQuestionsId[tabController.index]);
+              }
+            });
+            return Scaffold(
+                backgroundColor: AppColor.colorPrimary,
+                appBar: _buildAppBar(),
+                body: TabBarView(
+                  children: [
+                    for (int i = 0; i < 5; i++)
+                      _buildListCard(contentQuestions[i])
+                  ],
+                ));
+          },
+        ),
       ),
     );
   }
@@ -96,14 +123,14 @@ class _SpreadPageState extends State<SpreadPage> with AfterLayoutMixin {
               isScrollable: true,
               indicator: BoxDecoration(color: Colors.transparent),
               tabs: [
-                for (int i = 0; i < categories.length; i++)
+                for (int i = 0; i < contentQuestions.length; i++)
                   ValueListenableBuilder<int>(
                       valueListenable: _currentIndex,
                       builder:
                           (BuildContext context, int value, Widget? child) {
                         return Center(
                           child: Image.asset(
-                            categories[i],
+                            contentQuestions[i],
                             width: AppDimen.spacing_4,
                             height: AppDimen.spacing_4,
                             color: value == i
@@ -118,12 +145,27 @@ class _SpreadPageState extends State<SpreadPage> with AfterLayoutMixin {
     );
   }
 
-  _buildListCard(String category) {
-    List<String>? list = _bloc.getQuestionWithCategories(category);
-    return _buildGridView(list);
+  Widget _buildListCard(String category) {
+    List<ContentQuestionResponse>? list = [];
+
+    return BlocListener<SpreadPageBloc, SpreadPageState>(
+      listener: _blocListener,
+      child: BlocBuilder<SpreadPageBloc, SpreadPageState>(
+        bloc: _bloc,
+        builder: (context, state) {
+          if (state is SpreadPageGetDataSuccessState) {
+            list = state.data;
+            return _buildGridView(list ?? []);
+          }
+          return Container();
+        },
+      ),
+    );
+
+    // return BlocListener(child: _buildGridView(list));
   }
 
-  _buildGridView(List<String>? list) {
+  Widget _buildGridView(List<ContentQuestionResponse>? list) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: AppDimen.spacing_2),
       child: GridView.builder(
@@ -168,11 +210,13 @@ class _SpreadPageState extends State<SpreadPage> with AfterLayoutMixin {
                         margin:
                             EdgeInsets.symmetric(vertical: AppDimen.spacing_2),
                         child: Center(
-                            child: CustomText(
-                          item,
-                          fontSize: 16.0,
-                          fontFamily: FontFamily.poppins,
-                        )),
+                          child: CustomText(
+                            item.contentQuestion ?? 'Content Question',
+                            fontSize: 16.0,
+                            align: TextAlign.center,
+                            fontFamily: FontFamily.poppins,
+                          ),
+                        ),
                       )
                     ],
                   ),

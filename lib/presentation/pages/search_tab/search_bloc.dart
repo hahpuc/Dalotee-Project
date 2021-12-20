@@ -100,14 +100,6 @@ class SearchPageBloc extends BlocBase<SearchPageState> {
     } else {
       emit(SearchPageGetDataFailState('Failed to get data'));
     }
-
-    // List<CardData> listCard = [];
-    // listAllCard.forEach((element) {
-    //   if (element.category == category) {
-    //     listCard.add(element);
-    //   }
-    // });
-    // return listCard;
   }
 
 //   List<CardData>? getCardWithName(String name) {

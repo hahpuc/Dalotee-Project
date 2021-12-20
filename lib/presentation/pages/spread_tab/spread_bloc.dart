@@ -14,30 +14,24 @@ class SpreadPageBloc extends BlocBase<SpreadPageState> {
     'Người yêu tương lai của tôi'
   ];
 
-  Future<void> getData() async {
-    emit(SpreadPageLoadingState());
-    emit(SpreadPageGetDataSuccessState());
-    // emit(SpreadPageGetDataFailState());
-  }
+//   Future<void> getData() async {
+//     emit(SpreadPageLoadingState());
+//     emit(SpreadPageGetDataSuccessState());
+//     // emit(SpreadPageGetDataFailState());
+//   }
 
-  List<String>? getQuestionWithCategories(String category) {
-    // List<String> listQuestion = [];
-    // allQuestionList.forEach((element) {
-    //   if (element == category) {
-    //     listQuestion.add(element);
-    //   }
-    // });
-    // return listQuestion;
-    return allQuestionList;
-  }
+  Future<void> getContentQuestion(String typeID) async {
+    // emit(SearchPageLoadingState());
 
-  // List<CardData>? getCardWithName(String name) {
-  //   List<CardData> listCard = [];
-  //   listAllCard.forEach((element) {
-  //     if (element.name == name) {
-  //       listCard.add(element);
-  //     }
-  //   });
-  //   return listCard;
-  // }
+    var response =
+        await appRepository.apiService.getContentQuestionByType(typeID);
+
+    if (response.isSuccessful()) {
+      final resultData = response.response?.data;
+
+      emit(SpreadPageGetDataSuccessState(resultData!.data!));
+    } else {
+      emit(SpreadPageGetDataFailState('Failed to get data'));
+    }
+  }
 }
