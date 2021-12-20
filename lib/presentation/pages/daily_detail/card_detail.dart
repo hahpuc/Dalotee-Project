@@ -2,6 +2,7 @@ import 'package:dalotee/configs/routes.dart';
 import 'package:dalotee/data/model/response/get_card_category_response.dart';
 import 'package:dalotee/generated/assets/assets.gen.dart';
 import 'package:dalotee/generated/assets/fonts.gen.dart';
+import 'package:dalotee/presentation/dialogs/ok_dialog.dart';
 import 'package:dalotee/presentation/pages/daily_tab/widget/keyword_widget.dart';
 import 'package:dalotee/presentation/widgets/base/custom_appbar.dart';
 import 'package:dalotee/presentation/widgets/base/custom_text.dart';
@@ -97,7 +98,16 @@ class _CardDetailPageState extends State<CardDetailPage> {
       child: Column(
         children: [
           for (final item in keywordList)
-            KeywordWidget(keyword: item.title ?? 'Keyword')
+            KeywordWidget(
+              keyword: item.title ?? 'Keyword',
+              onTap: () {
+                OkDialog(
+                        context: context,
+                        title: item.title ?? 'Keyword',
+                        content: item.content ?? 'Content')
+                    .show();
+              },
+            )
         ],
       ),
     );

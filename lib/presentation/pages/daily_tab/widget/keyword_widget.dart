@@ -4,8 +4,11 @@ import 'package:dalotee/values/dimens.dart';
 import 'package:flutter/material.dart';
 
 class KeywordWidget extends StatelessWidget {
-  const KeywordWidget({Key? key, required this.keyword}) : super(key: key);
+  const KeywordWidget({Key? key, required this.keyword, this.onTap})
+      : super(key: key);
   final String keyword;
+
+  final Function()? onTap;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -21,10 +24,13 @@ class KeywordWidget extends StatelessWidget {
         vertical: 5,
         horizontal: 20,
       ),
-      child: Column(
-        children: [
-          CustomText(keyword),
-        ],
+      child: InkWell(
+        onTap: onTap,
+        child: Column(
+          children: [
+            CustomText(keyword),
+          ],
+        ),
       ),
     );
   }

@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class AppDimen {
   static const double horizontalSpacing = 16.0;
   static const double verticalSpacing = 16.0;
@@ -10,4 +12,11 @@ class AppDimen {
   static const double sizeTextSmall = 14.0;
 
   static const double spacing_large = 50.0;
+
+  static const double radiusNormal = 8.0;
+
+  static const dialogPadding =
+      const EdgeInsets.symmetric(horizontal: 16, vertical: 16);
+  static const dialogButtonPadding =
+      const EdgeInsets.symmetric(horizontal: 16, vertical: 12);
 }
