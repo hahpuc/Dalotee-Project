@@ -66,7 +66,7 @@ class ApiServiceHelper {
     print("----> Url: $url");
     print("----> Method: GET");
     print("----> Headers: $headers");
-    log("-----> Response ${response.body}");
+    print("-----> Response ${response.body}");
     responseJson = _checkHttpResponse(response);
     return responseJson;
   }

@@ -132,9 +132,7 @@ class _DailySelectedPageState extends State<DailySelectedPage>
                         vertical: AppDimen.spacing_2,
                         horizontal: AppDimen.spacing_large,
                       ),
-                      onTap: () => Navigator.pushNamed(
-                          context, RoutePaths.CARD_DETAIL,
-                          arguments: cardDetail),
+                      onTap: onCardDetailTap,
                     )
                   ],
                 ),
@@ -145,5 +143,9 @@ class _DailySelectedPageState extends State<DailySelectedPage>
         ),
       ),
     );
+  }
+
+  void onCardDetailTap() {
+    Navigator.pushNamed(context, RoutePaths.CARD_DETAIL, arguments: cardDetail);
   }
 }

@@ -89,6 +89,8 @@ class SearchPageBloc extends BlocBase<SearchPageState> {
 //   }
 
   Future<void> getCardWithCategories(String category) async {
+    // emit(SearchPageLoadingState());
+
     var response = await appRepository.apiService.getCardByCategory(category);
 
     if (response.isSuccessful()) {

@@ -9,7 +9,6 @@ import 'package:dalotee/presentation/pages/search_tab/search_bloc.dart';
 import 'package:dalotee/presentation/pages/search_tab/search_state.dart';
 import 'package:dalotee/presentation/widgets/base/custom_appbar.dart';
 import 'package:dalotee/presentation/widgets/base/custom_text.dart';
-import 'package:dalotee/presentation/widgets/base/custom_textfield.dart';
 import 'package:dalotee/values/colors.dart';
 import 'package:dalotee/values/dimens.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +31,8 @@ class SearchPage extends StatefulWidget {
   }
 }
 
-class _SearchPageState extends State<SearchPage> with AfterLayoutMixin {
+class _SearchPageState extends State<SearchPage>
+    with AfterLayoutMixin, AutomaticKeepAliveClientMixin {
   SearchPageBloc _bloc = SearchPageBloc(appRepository: locator.get());
 
   TextEditingController _controllerSearch = TextEditingController();
@@ -60,11 +60,15 @@ class _SearchPageState extends State<SearchPage> with AfterLayoutMixin {
   ValueNotifier<int> _currentIndex = ValueNotifier<int>(0);
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   void afterFirstFrame(BuildContext context) {
-    // _bloc.getData();
+    _bloc.getCardWithCategories(categoryIds[0]);
   }
 
   _blocListener(BuildContext context, SearchPageState state) async {
+    print("State: $state");
     if (state is SearchPageLoadingState) {
       EasyLoading.show(status: 'loading', maskType: EasyLoadingMaskType.black);
     } else {
@@ -87,50 +91,56 @@ class _SearchPageState extends State<SearchPage> with AfterLayoutMixin {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: categories.length,
-      child: Builder(
-        builder: (BuildContext context) {
-          final TabController tabController = DefaultTabController.of(context)!;
-          tabController.addListener(() {
-            if (!tabController.indexIsChanging) {
-              _currentIndex.value = tabController.index;
+    super.build(context);
+    return BlocProvider(
+      create: (context) => _bloc,
+      child: DefaultTabController(
+        length: categories.length,
+        child: Builder(
+          builder: (BuildContext context) {
+            final TabController tabController =
+                DefaultTabController.of(context)!;
+            tabController.addListener(() {
+              if (!tabController.indexIsChanging) {
+                _currentIndex.value = tabController.index;
 
-              //   _bloc.getCardWithCategories(categoryIds);
-            }
-          });
-          return Scaffold(
-            backgroundColor: AppColor.colorPrimary,
-            appBar: _buildAppBar(),
-            body: Container(
-              child: ValueListenableBuilder<double>(
-                  valueListenable: sizeAnimatedContainer,
-                  builder: (BuildContext context, double size, Widget? child) {
-                    if (size != 0) {
-                      return AnimatedContainer(
-                          curve: Curves.linear,
-                          duration: Duration(seconds: 10),
-                          height: size,
-                          width: size,
-                          child: ValueListenableBuilder<List<CardData>?>(
-                              valueListenable: listCardSearch,
-                              builder: (BuildContext context,
-                                  List<CardData>? listCard, Widget? child) {
-                                return _buildGridView([]);
-                              }));
-                    }
-                    {
-                      return TabBarView(
-                        children: [
-                          for (int i = 0; i < 5; i++)
-                            _buildListCard(categoryIds[i])
-                        ],
-                      );
-                    }
-                  }),
-            ),
-          );
-        },
+                _bloc.getCardWithCategories(categoryIds[tabController.index]);
+              }
+            });
+            return Scaffold(
+              backgroundColor: AppColor.colorPrimary,
+              appBar: _buildAppBar(),
+              body: Container(
+                child: ValueListenableBuilder<double>(
+                    valueListenable: sizeAnimatedContainer,
+                    builder:
+                        (BuildContext context, double size, Widget? child) {
+                      // if (size != 0) {
+                      //   return AnimatedContainer(
+                      //       curve: Curves.linear,
+                      //       duration: Duration(seconds: 10),
+                      //       height: size,
+                      //       width: size,
+                      //       child: ValueListenableBuilder<List<CardData>?>(
+                      //           valueListenable: listCardSearch,
+                      //           builder: (BuildContext context,
+                      //               List<CardData>? listCard, Widget? child) {
+                      //             return _buildGridView([]);
+                      //           }));
+                      // }
+                      {
+                        return TabBarView(
+                          children: [
+                            for (int i = 0; i < 5; i++)
+                              _buildListCard(categoryIds[i])
+                          ],
+                        );
+                      }
+                    }),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -249,20 +259,17 @@ class _SearchPageState extends State<SearchPage> with AfterLayoutMixin {
   Widget _buildListCard(String category) {
     List<CardResponseModel>? list;
 
-    return BlocProvider(
-      create: (context) => _bloc,
-      child: BlocListener<SearchPageBloc, SearchPageState>(
-        listener: _blocListener,
-        child: BlocBuilder<SearchPageBloc, SearchPageState>(
-          bloc: _bloc,
-          builder: (context, state) {
-            if (state is SearchPageGetDataSuccessState) {
-              list = state.data;
-              return _buildGridView(list ?? []);
-            }
-            return Container();
-          },
-        ),
+    return BlocListener<SearchPageBloc, SearchPageState>(
+      listener: _blocListener,
+      child: BlocBuilder<SearchPageBloc, SearchPageState>(
+        bloc: _bloc,
+        builder: (context, state) {
+          if (state is SearchPageGetDataSuccessState) {
+            list = state.data;
+            return _buildGridView(list ?? []);
+          }
+          return Container();
+        },
       ),
     );
   }
@@ -271,54 +278,56 @@ class _SearchPageState extends State<SearchPage> with AfterLayoutMixin {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: AppDimen.spacing_2),
       child: GridView.builder(
-          itemCount: list?.length,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              crossAxisSpacing: AppDimen.spacing_4,
-              mainAxisSpacing: AppDimen.spacing_5,
-              mainAxisExtent: 280),
-          itemBuilder: (BuildContext context, int index) {
-            if (list != null) {
-              CardResponseModel item = list[index];
-              return InkWell(
-                onTap: () => Navigator.pushNamed(
-                    context, RoutePaths.CARD_DETAIL,
-                    arguments: [item, 'Ý nghĩa lá bài']),
-                child: Center(
-                  child: Container(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8.0),
-                            image: DecorationImage(
-                                image: NetworkImage(
-                                    item.images?[0].imageUrl ?? ''),
-                                fit: BoxFit.cover),
-                          ),
+        itemCount: list?.length,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 3,
+            crossAxisSpacing: AppDimen.spacing_4,
+            mainAxisSpacing: AppDimen.spacing_5,
+            mainAxisExtent: 280),
+        itemBuilder: (BuildContext context, int index) {
+          if (list != null) {
+            CardResponseModel item = list[index];
+            return InkWell(
+              onTap: () => Navigator.pushNamed(context, RoutePaths.CARD_DETAIL,
+                  arguments: item),
+              child: Center(
+                child: Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 100,
+                        height: 200,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.0),
+                          image: DecorationImage(
+                              image:
+                                  NetworkImage(item.images?[0].imageUrl ?? ''),
+                              fit: BoxFit.fill),
                         ),
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                              vertical: AppDimen.spacing_2),
-                          child: Center(
-                              child: CustomText(
+                      ),
+                      Container(
+                        margin:
+                            EdgeInsets.symmetric(vertical: AppDimen.spacing_2),
+                        child: Center(
+                          child: CustomText(
                             item.name ?? "",
                             fontSize: 16.0,
                             fontFamily: FontFamily.poppins,
-                            fontWeight: FontWeight.bold,
-                          )),
-                        )
-                      ],
-                    ),
+                          ),
+                        ),
+                      )
+                    ],
                   ),
                 ),
-              );
-            } else {
-              return Container();
-            }
-          }),
+              ),
+            );
+          } else {
+            return Container();
+          }
+        },
+      ),
     );
   }
 }

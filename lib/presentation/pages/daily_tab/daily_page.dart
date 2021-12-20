@@ -26,7 +26,8 @@ class DailyPage extends StatefulWidget {
   }
 }
 
-class _DailyPageState extends State<DailyPage> with AfterLayoutMixin {
+class _DailyPageState extends State<DailyPage>
+    with AfterLayoutMixin, AutomaticKeepAliveClientMixin {
   DailyPageBloc _bloc = DailyPageBloc(appRepository: locator.get());
   double _opacity = 0;
   CardData _cardChosen = card;
@@ -37,7 +38,11 @@ class _DailyPageState extends State<DailyPage> with AfterLayoutMixin {
   }
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       backgroundColor: AppColor.colorPrimary,
       appBar: _buildAppBar(),
