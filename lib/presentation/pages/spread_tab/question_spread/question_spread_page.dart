@@ -99,7 +99,8 @@ class _QuestionSpreadPageState extends State<QuestionSpreadPage>
                   delegate: SliverChildBuilderDelegate((context, index) {
                     return InkWell(
                       onTap: () {
-                        // onTapQuestion(context, questionList[index]);
+                        onTapQuestion(context,
+                            questionList[index].question ?? 'Questions');
                       },
                       child: Container(
                         margin: EdgeInsets.symmetric(
@@ -154,17 +155,6 @@ class _QuestionSpreadPageState extends State<QuestionSpreadPage>
         },
       ),
     );
-  }
-
-  List<String> getQuestionList() {
-    return [
-      'Tổng quan mối quan hệ',
-      'Người ấy nghĩ gì về tôi?',
-      'Tình cảm người ấy dành cho tôi?',
-      'Tôi mong muốn điều gì ở người ấy?',
-      'Tôi mong muốn điều gì ở người ấy và mối quan hệ này',
-      'Tôi nên làm gì để cải thiện mối quan hệ'
-    ];
   }
 
   onTapQuestion(BuildContext context, String question) {

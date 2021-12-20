@@ -64,6 +64,18 @@ class _SpreadPageState extends State<SpreadPage> with AfterLayoutMixin {
     _bloc.getContentQuestion(contentQuestionsId[0]);
   }
 
+  // init state
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _bloc.close();
+    super.dispose();
+  }
+
   _blocListener(BuildContext context, SpreadPageState state) async {
     if (state is SpreadPageLoadingState) {
       EasyLoading.show(status: 'loading', maskType: EasyLoadingMaskType.black);
