@@ -1,5 +1,7 @@
 import 'package:dalotee/common/mixins/after_layout.dart';
+import 'package:dalotee/configs/routes.dart';
 import 'package:dalotee/configs/service_locator.dart';
+import 'package:dalotee/data/local/pref_repository.dart';
 import 'package:dalotee/data/model/response/user_response.dart';
 import 'package:dalotee/generated/assets/fonts.gen.dart';
 import 'package:dalotee/presentation/pages/profile_tab/profile_bloc.dart';
@@ -41,6 +43,16 @@ class _ProfilePageState extends State<ProfilePage> with AfterLayoutMixin {
   CustomAppBar _buildAppBar() {
     return CustomAppBar(
       leading: Container(),
+      actions: [
+        IconButton(
+            onPressed: () {
+              locator.get<PrefRepository>().clearHistory();
+            },
+            icon: Icon(
+              Icons.settings,
+              color: Colors.black,
+            ))
+      ],
       title: CustomText(
         "Trang cá nhân",
         fontFamily: FontFamily.gelasio,
@@ -138,7 +150,15 @@ class _ProfilePageState extends State<ProfilePage> with AfterLayoutMixin {
 
   _buildOption(UserResponseData user) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        var history = locator.get<PrefRepository>().getListHistoryInLocal();
+        // for (int i = 0; i < history.length; ++i) {
+        //   print(' ----> Index $i ===> ${history[i].toJson()} \n');
+        // }
+
+        Navigator.pushNamed(context, RoutePaths.HISTORY_CARD,
+            arguments: history);
+      },
       child: Container(
         margin: EdgeInsets.symmetric(
             vertical: AppDimen.spacing_4,

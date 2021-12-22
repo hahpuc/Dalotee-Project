@@ -289,7 +289,7 @@ class _SearchPageState extends State<SearchPage>
             CardResponseModel item = list[index];
             return InkWell(
               onTap: () => Navigator.pushNamed(context, RoutePaths.CARD_DETAIL,
-                  arguments: item),
+                  arguments: [item, 'search']),
               child: Center(
                 child: Container(
                   child: Column(

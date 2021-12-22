@@ -1,6 +1,7 @@
 import 'package:dalotee/common/mixins/after_layout.dart';
 import 'package:dalotee/configs/routes.dart';
 import 'package:dalotee/configs/service_locator.dart';
+import 'package:dalotee/data/local/pref_repository.dart';
 import 'package:dalotee/data/model/response/card_model.dart';
 import 'package:dalotee/data/model/response/get_card_category_response.dart';
 import 'package:dalotee/generated/assets/assets.gen.dart';
@@ -68,7 +69,9 @@ class _DailySelectedPageState extends State<DailySelectedPage>
       EasyLoading.dismiss();
     }
 
-    if (state is DailySelectedLoadingStateSuccess) {}
+    if (state is DailySelectedLoadingStateSuccess) {
+      locator.get<PrefRepository>().addCartToHistory(state.data);
+    }
 
     if (state is DailySelectedLoadingStateFailed) {
       EasyLoading.showError(state.msg);

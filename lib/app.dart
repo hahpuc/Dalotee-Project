@@ -1,3 +1,4 @@
+import 'package:dalotee/data/local/pref_repository.dart';
 import 'package:dalotee/presentation/bottom_navigation/bottom_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,6 +11,7 @@ import 'package:dalotee/configs/service_locator.dart';
 import 'package:dalotee/generated/assets/fonts.gen.dart';
 import 'package:dalotee/presentation/widgets/base/app_configs_widgets.dart';
 import 'package:dalotee/values/colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'bloc/app/app_bloc.dart';
 import 'bloc/locale/locale_bloc.dart';
 import 'configs/flavor.dart';
@@ -85,6 +87,8 @@ class MyApp extends StatelessWidget {
 
     // IoC
     await setupServiceLocator();
+
+    locator.get<PrefRepository>().setUpListHistoryInLocal();
 
     return runApp(AppConfigWidget(
       flavorConfig: flavorConfig,

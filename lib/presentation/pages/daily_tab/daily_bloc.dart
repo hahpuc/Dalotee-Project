@@ -10,6 +10,7 @@ class DailyPageBloc extends BlocBase<DailyPageState> {
   DailyPageBloc({required this.appRepository}) : super(DailyPageState());
 
   Future<void> getListCard() async {
+    print("HOME GET LIST CARD");
     emit(DailyPageLoadingState());
     List<CardData> listCard = [card, card, card, card];
     // ignore: unnecessary_null_comparison

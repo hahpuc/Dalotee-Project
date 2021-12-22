@@ -59,7 +59,7 @@ class _DailyPageState extends State<DailyPage>
   }
 
   _blocListener(BuildContext context, DailyPageState state) async {
-    // print("State $state");
+    print("State $state");
     if (state is DailyPageLoadingState) {
       EasyLoading.show(status: 'loading', maskType: EasyLoadingMaskType.black);
     } else {
