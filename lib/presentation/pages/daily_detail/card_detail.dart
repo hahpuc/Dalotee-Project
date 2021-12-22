@@ -21,18 +21,19 @@ class _CardDetailPageState extends State<CardDetailPage> {
   List<KeyWordData> keywordList = [];
   @override
   Widget build(BuildContext context) {
-    var card = ModalRoute.of(context)!.settings.arguments as CardResponseModel;
-    // CardData card = arg[0];
-    // String titleAppBar = arg[1];
+    var arg = ModalRoute.of(context)!.settings.arguments as List;
+
+    CardResponseModel card = arg[0] as CardResponseModel;
+    String type = arg[1] as String;
 
     return Scaffold(
       backgroundColor: AppColor.colorPrimary,
-      appBar: _buildAppBar(card.name ?? 'Card Name'),
+      appBar: _buildAppBar(card.name ?? 'Card Name', type),
       body: _buildBody(card.name ?? 'Card Name', card),
     );
   }
 
-  _buildAppBar(String title) {
+  _buildAppBar(String title, String type) {
     return CustomAppBar(
       title: CustomText(
         title,
@@ -42,7 +43,11 @@ class _CardDetailPageState extends State<CardDetailPage> {
       leading: IconButton(
         icon: Assets.images.icBack.svg(),
         onPressed: () {
-          Navigator.popUntil(context, (Route<dynamic> route) => route.isFirst);
+          if (type == "daily")
+            Navigator.popUntil(
+                context, (Route<dynamic> route) => route.isFirst);
+          else
+            Navigator.pop(context);
         },
       ),
     );

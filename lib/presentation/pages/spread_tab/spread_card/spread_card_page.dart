@@ -1,11 +1,10 @@
 import 'package:dalotee/common/mixins/after_layout.dart';
+import 'package:dalotee/configs/routes.dart';
 import 'package:dalotee/configs/service_locator.dart';
-import 'package:dalotee/data/model/response/card_model.dart';
 import 'package:dalotee/data/model/response/get_card_category_response.dart';
 import 'package:dalotee/generated/assets/assets.gen.dart';
 import 'package:dalotee/generated/assets/fonts.gen.dart';
 import 'package:dalotee/presentation/dialogs/keyword_dialog.dart';
-import 'package:dalotee/presentation/pages/daily_tab/data.dart';
 import 'package:dalotee/presentation/pages/spread_tab/spread_card/spread_card_bloc.dart';
 import 'package:dalotee/presentation/pages/spread_tab/spread_card/spread_card_state.dart';
 import 'package:dalotee/presentation/widgets/base/custom_appbar.dart';
@@ -40,6 +39,7 @@ class _SpreadCardPageState extends State<SpreadCardPage> with AfterLayoutMixin {
   int cardOpened = 0;
 
   List<CardResponseModel> listCard = [];
+  List<bool> listCardOpened = [true, true, true];
 
   @override
   void afterFirstFrame(BuildContext context) {
@@ -127,56 +127,10 @@ class _SpreadCardPageState extends State<SpreadCardPage> with AfterLayoutMixin {
                     height: 200,
                     child: ListView(
                       scrollDirection: Axis.horizontal,
-                      children: listCard.map((item) {
-                        return Container(
-                          margin: EdgeInsets.only(left: AppDimen.spacing_2),
-                          child: FlipCard(
-                            front: Container(
-                              width: 100,
-                              height: 150,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  fit: BoxFit.fill,
-                                  image: Assets.images.imgBackCard,
-                                ),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(8.0)),
-                                color: Colors.redAccent,
-                              ),
-                            ),
-                            back: Container(
-                              child: Container(
-                                width: 100,
-                                height: 150,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  image: DecorationImage(
-                                      image: NetworkImage(item
-                                              .images?[0].imageUrl ??
-                                          "https://i.imgur.com/2njY6VH.jpg"),
-                                      fit: BoxFit.fill),
-                                ),
-                              ),
-                            ),
-                            onFlipDone: (bool k) {
-                              if (cardOpened < 3) {
-                                sizeAnimatedContainer.value += 170;
-                                Future.delayed(Duration(milliseconds: 500), () {
-                                  description.value?.add(
-                                    _buildDescriptionCard(
-                                        cardOpened + 1,
-                                        item.keyword?.keyword ?? [],
-                                        item.name ?? ""),
-                                  );
-                                  setState(() {
-                                    cardOpened++;
-                                  });
-                                });
-                              }
-                            },
-                          ),
-                        );
-                      }).toList(),
+                      children: [
+                        for (var i = 0; i < listCard.length; i++)
+                          _buildCard(listCard[i], i),
+                      ],
                     ),
                   ),
                 ),
@@ -226,6 +180,62 @@ class _SpreadCardPageState extends State<SpreadCardPage> with AfterLayoutMixin {
           }
 
           return Container();
+        },
+      ),
+    );
+  }
+
+  Widget _buildCard(CardResponseModel item, int index) {
+    return Container(
+      margin: EdgeInsets.only(left: AppDimen.spacing_2),
+      child: FlipCard(
+        front: Container(
+          width: 100,
+          height: 150,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.fill,
+              image: Assets.images.imgBackCard,
+            ),
+            borderRadius: BorderRadius.all(Radius.circular(8.0)),
+            color: Colors.redAccent,
+          ),
+        ),
+        back: Container(
+          child: InkWell(
+            onTap: () {
+              print("ITEM ID ${item.id}");
+              Navigator.pushNamed(context, RoutePaths.CARD_DETAIL,
+                  arguments: [item, "spread"]);
+            },
+            child: Container(
+              width: 100,
+              height: 150,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.0),
+                image: DecorationImage(
+                    image: NetworkImage(item.images?[0].imageUrl ??
+                        "https://i.imgur.com/2njY6VH.jpg"),
+                    fit: BoxFit.fill),
+              ),
+            ),
+          ),
+        ),
+        flipOnTouch: listCardOpened[index],
+        onFlipDone: (bool k) {
+          if (cardOpened < 3) {
+            sizeAnimatedContainer.value += 170;
+            Future.delayed(Duration(milliseconds: 500), () {
+              description.value?.add(
+                _buildDescriptionCard(cardOpened + 1,
+                    item.keyword?.keyword ?? [], item.name ?? ""),
+              );
+              setState(() {
+                cardOpened++;
+                listCardOpened[index] = false;
+              });
+            });
+          }
         },
       ),
     );

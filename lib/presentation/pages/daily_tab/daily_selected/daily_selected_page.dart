@@ -146,6 +146,7 @@ class _DailySelectedPageState extends State<DailySelectedPage>
   }
 
   void onCardDetailTap() {
-    Navigator.pushNamed(context, RoutePaths.CARD_DETAIL, arguments: cardDetail);
+    Navigator.pushNamed(context, RoutePaths.CARD_DETAIL,
+        arguments: [cardDetail, "daily"]);
   }
 }
