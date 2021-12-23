@@ -1,8 +1,12 @@
 import 'package:dalotee/data/model/response/base/base_response.dart';
 
 class UserResponse extends BaseResponseData<UserResponseData> {
-  UserResponseData parseData(data) {
-    throw UnimplementedError();
+  // UserResponseData parseData(data) {
+  //   return UserResponseData.fromMap(map)
+  // }
+  @override
+  UserResponseData parseData(dynamic mapData) {
+    return UserResponseData.fromMap(mapData);
   }
 }
 
@@ -22,16 +26,16 @@ class UserResponseData {
         userId: map["userId"] as int,
         name: map["name"] as String,
         phoneNumber: map["phoneNumber"] as String,
-        birthDay: map["birthDay"] as DateTime);
+        birthDay: DateTime.parse(map["birthDay"]));
   }
 
   Map<String, dynamic> toMap() {
     return {
       "avatar": this.avatar,
       "userId": this.userId,
-      "id": this.name,
+      "name": this.name,
       "phoneNumber": this.phoneNumber,
-      "birthDay": this.birthDay
+      "birthDay": this.birthDay?.toIso8601String(),
     };
   }
 }

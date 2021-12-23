@@ -8,15 +8,15 @@ class SettingPageBloc extends BlocBase<SettingPageState> {
 
   SettingPageBloc({required this.appRepository}) : super(SettingPageState());
 
-  Future<void> getData() async {
+  Future<void> getData(UserResponseData user) async {
     emit(SettingPageLoadingState());
-    UserResponseData user = UserResponseData(
-        avatar:
-            'https://file.tinnhac.com/resize/600x-/2020/06/25/20200625233354-bf15.jpg',
-        userId: 1,
-        name: "Nguyen Thanh Long",
-        birthDay: DateTime(2000, 04, 04),
-        phoneNumber: "08785674");
+    // UserResponseData user = UserResponseData(
+    //     avatar:
+    //         'https://file.tinnhac.com/resize/600x-/2020/06/25/20200625233354-bf15.jpg',
+    //     userId: 1,
+    //     name: "Nguyen Thanh Long",
+    //     birthDay: DateTime(2000, 04, 04),
+    //     phoneNumber: "08785674");
     // ignore: unnecessary_null_comparison
     if (user != null) {
       emit(SettingPageGetDataSuccessState(user));

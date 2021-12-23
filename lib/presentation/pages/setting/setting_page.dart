@@ -1,12 +1,16 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:dalotee/common/mixins/after_layout.dart';
 import 'package:dalotee/configs/routes.dart';
 import 'package:dalotee/configs/service_locator.dart';
+import 'package:dalotee/data/local/pref_repository.dart';
 import 'package:dalotee/data/model/response/user_response.dart';
 import 'package:dalotee/generated/assets/fonts.gen.dart';
 import 'package:dalotee/presentation/pages/profile_tab/profile_bloc.dart';
 import 'package:dalotee/presentation/pages/profile_tab/profile_state.dart';
+import 'package:dalotee/presentation/pages/setting/setting_bloc.dart';
+import 'package:dalotee/presentation/pages/setting/setting_state.dart';
 import 'package:dalotee/presentation/widgets/base/app_back_button.dart';
 import 'package:dalotee/presentation/widgets/base/custom_appbar.dart';
 import 'package:dalotee/presentation/widgets/base/custom_text.dart';
@@ -28,15 +32,16 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> with AfterLayoutMixin {
-  ProfilePageBloc _bloc = ProfilePageBloc(appRepository: locator.get());
+  SettingPageBloc _bloc = SettingPageBloc(appRepository: locator.get());
   late TextEditingController _nameController;
   late TextEditingController _birthDayController;
   late TextEditingController _phoneController;
-
   final DateFormat formatter = DateFormat('yyyy-MM-dd');
   @override
   void afterFirstFrame(BuildContext context) {
-    _bloc.getData();
+    var user = ModalRoute.of(context)?.settings.arguments as UserResponseData;
+
+    _bloc.getData(user);
   }
 
   @override
@@ -74,7 +79,15 @@ class _SettingPageState extends State<SettingPage> with AfterLayoutMixin {
       ),
       actions: [
         IconButton(
-            onPressed: () {},
+            onPressed: () {
+              locator.get<PrefRepository>().updateUser(
+                    UserResponseData(
+                        name: _nameController.text,
+                        birthDay: DateTime.parse(_birthDayController.text),
+                        phoneNumber: _phoneController.text),
+                  );
+              Navigator.pop(context);
+            },
             icon: Icon(
               Icons.done,
               color: Colors.black,
@@ -83,8 +96,8 @@ class _SettingPageState extends State<SettingPage> with AfterLayoutMixin {
     );
   }
 
-  _blocListener(BuildContext context, ProfilePageState state) async {
-    if (state is ProfilePageLoadingState) {
+  _blocListener(BuildContext context, SettingPageState state) async {
+    if (state is SettingPageLoadingState) {
       EasyLoading.show(status: 'loading', maskType: EasyLoadingMaskType.black);
     } else {
       EasyLoading.dismiss();
@@ -94,14 +107,13 @@ class _SettingPageState extends State<SettingPage> with AfterLayoutMixin {
   Widget _buildBody() {
     return BlocProvider(
       create: (context) => _bloc,
-      child: BlocListener<ProfilePageBloc, ProfilePageState>(
+      child: BlocListener<SettingPageBloc, SettingPageState>(
         listener: _blocListener,
-        child: BlocBuilder<ProfilePageBloc, ProfilePageState>(
+        child: BlocBuilder<SettingPageBloc, SettingPageState>(
           bloc: _bloc,
           builder: (context, state) {
-            if (state is ProfilePageGetDataSuccessState) {
+            if (state is SettingPageGetDataSuccessState) {
               UserResponseData? user = state.user;
-              print(user.phoneNumber);
               _nameController.text = user.name ?? '';
               _birthDayController.text =
                   formatter.format(user.birthDay ?? DateTime.now()).toString();

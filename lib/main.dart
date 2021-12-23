@@ -5,7 +5,7 @@ void main() async {
   var flavorConfig = FlavorConfig(
       flavor: Flavor.DEV,
       values: FlavorValues(
-        baseUrl: "http://ec02-171-242-37-80.ngrok.io",
+        baseUrl: "http://192.168.1.4:5000",
       ));
   return MyApp.appRunner(flavorConfig);
 }

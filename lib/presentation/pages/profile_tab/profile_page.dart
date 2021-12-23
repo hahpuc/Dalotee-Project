@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:dalotee/common/mixins/after_layout.dart';
 import 'package:dalotee/configs/routes.dart';
 import 'package:dalotee/configs/service_locator.dart';
@@ -15,6 +18,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -28,7 +32,12 @@ class _ProfilePageState extends State<ProfilePage> with AfterLayoutMixin {
   UserResponseData? _currentUser;
   @override
   void afterFirstFrame(BuildContext context) {
-    _bloc.getData();
+    _bloc.getData(locator.get<PrefRepository>().getUser());
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -43,16 +52,16 @@ class _ProfilePageState extends State<ProfilePage> with AfterLayoutMixin {
   CustomAppBar _buildAppBar() {
     return CustomAppBar(
       leading: Container(),
-      actions: [
-        IconButton(
-            onPressed: () {
-              locator.get<PrefRepository>().clearHistory();
-            },
-            icon: Icon(
-              Icons.settings,
-              color: Colors.black,
-            ))
-      ],
+      // actions: [
+      //   IconButton(
+      //       onPressed: () {
+      //         locator.get<PrefRepository>().clearHistory();
+      //       },
+      //       icon: Icon(
+      //         Icons.settings,
+      //         color: Colors.black,
+      //       ))
+      // ],
       title: CustomText(
         "Trang cá nhân",
         fontFamily: FontFamily.gelasio,
@@ -61,10 +70,8 @@ class _ProfilePageState extends State<ProfilePage> with AfterLayoutMixin {
       actions: [
         IconButton(
           onPressed: () {
-            Navigator.pushNamed(
-              context,
-              RoutePaths.SETTING,
-            );
+            var user = locator.get<PrefRepository>().getUser();
+            Navigator.pushNamed(context, RoutePaths.SETTING, arguments: user);
           },
           icon: Icon(Icons.settings),
           color: Colors.black,
@@ -92,6 +99,7 @@ class _ProfilePageState extends State<ProfilePage> with AfterLayoutMixin {
             if (state is ProfilePageGetDataSuccessState) {
               UserResponseData? user = state.user;
               if (user != null) {
+                afterFirstFrame(context);
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -122,14 +130,15 @@ class _ProfilePageState extends State<ProfilePage> with AfterLayoutMixin {
         ),
       );
     } else {
-      return CircleAvatar(
-        backgroundColor: AppColor.colorPrimary,
-        maxRadius: 100,
-        child: Center(
-            child: Icon(
-          Icons.supervised_user_circle,
-          color: Colors.white,
-        )),
+      return Container(
+        margin: EdgeInsets.only(top: AppDimen.spacing_3),
+        child: ClipOval(
+          child: Image.network(
+              'https://file.tinnhac.com/resize/600x-/2020/06/25/20200625233354-bf15.jpg',
+              width: 100,
+              height: 100,
+              fit: BoxFit.cover),
+        ),
       );
     }
   }
@@ -138,24 +147,28 @@ class _ProfilePageState extends State<ProfilePage> with AfterLayoutMixin {
     return Column(
       children: [
         Container(
-          margin:
-              EdgeInsets.fromLTRB(0, AppDimen.spacing_3, 0, AppDimen.spacing_1),
+          margin: EdgeInsets.fromLTRB(0, AppDimen.spacing_2, 0, 0),
           child: CustomText(
-            user.name!,
+            user.name ?? 'Username',
             fontFamily: FontFamily.gelasio,
             fontSize: FontSize.BIG,
           ),
         ),
-        CustomText(
-          user.birthDay!.day.toString() +
-              '/' +
-              user.birthDay!.month.toString() +
-              '/' +
-              user.birthDay!.year.toString(),
-          fontFamily: FontFamily.nutinoSans,
-          fontSize: FontSize.SMALL,
-          color: AppColor.colorGreyText,
+        Container(
+          margin:
+              EdgeInsets.fromLTRB(0, AppDimen.spacing_1, 0, AppDimen.spacing_1),
+          child: CustomText(
+            user.birthDay!.day.toString() +
+                '/' +
+                user.birthDay!.month.toString() +
+                '/' +
+                user.birthDay!.year.toString(),
+            fontFamily: FontFamily.nutinoSans,
+            fontSize: FontSize.SMALL,
+            color: AppColor.colorGreyText,
+          ),
         ),
+        CustomText(user.phoneNumber ?? '')
       ],
     );
   }
@@ -164,9 +177,6 @@ class _ProfilePageState extends State<ProfilePage> with AfterLayoutMixin {
     return InkWell(
       onTap: () {
         var history = locator.get<PrefRepository>().getListHistoryInLocal();
-        // for (int i = 0; i < history.length; ++i) {
-        //   print(' ----> Index $i ===> ${history[i].toJson()} \n');
-        // }
 
         Navigator.pushNamed(context, RoutePaths.HISTORY_CARD,
             arguments: history);

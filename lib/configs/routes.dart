@@ -3,6 +3,7 @@ import 'package:dalotee/presentation/pages/daily_detail/card_detail.dart';
 import 'package:dalotee/presentation/pages/daily_tab/daily_page.dart';
 import 'package:dalotee/presentation/pages/daily_tab/daily_selected/daily_selected_page.dart';
 import 'package:dalotee/presentation/pages/history_page/history_page.dart';
+import 'package:dalotee/presentation/pages/profile_tab/profile_page.dart';
 import 'package:dalotee/presentation/pages/setting/setting_page.dart';
 import 'package:dalotee/presentation/pages/spread_tab/question_spread/question_spread_page.dart';
 import 'package:dalotee/presentation/pages/spread_tab/spread_card/spread_card_page.dart';
@@ -17,6 +18,7 @@ class RoutePaths {
   static const String SPREAD_CARD = '/spread_card';
   static const String HISTORY_CARD = 'history';
   static const String SETTING = '/setting';
+  static const String PROFILE = '/profile';
 }
 
 class Routes {
@@ -46,6 +48,9 @@ class Routes {
       case RoutePaths.SETTING:
         return MaterialPageRoute(
             builder: (_) => SettingPage(), settings: settings);
+      case RoutePaths.PROFILE:
+        return MaterialPageRoute(
+            builder: (_) => ProfilePage(), settings: settings);
       default:
         return null;
     }
