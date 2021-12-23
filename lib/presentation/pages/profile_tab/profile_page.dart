@@ -1,4 +1,5 @@
 import 'package:dalotee/common/mixins/after_layout.dart';
+import 'package:dalotee/configs/routes.dart';
 import 'package:dalotee/configs/service_locator.dart';
 import 'package:dalotee/data/model/response/user_response.dart';
 import 'package:dalotee/generated/assets/fonts.gen.dart';
@@ -23,7 +24,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> with AfterLayoutMixin {
   ProfilePageBloc _bloc = ProfilePageBloc(appRepository: locator.get());
-
+  UserResponseData? _currentUser;
   @override
   void afterFirstFrame(BuildContext context) {
     _bloc.getData();
@@ -46,6 +47,18 @@ class _ProfilePageState extends State<ProfilePage> with AfterLayoutMixin {
         fontFamily: FontFamily.gelasio,
         fontSize: FontSize.BIG_1,
       ),
+      actions: [
+        IconButton(
+          onPressed: () {
+            Navigator.pushNamed(
+              context,
+              RoutePaths.SETTING,
+            );
+          },
+          icon: Icon(Icons.settings),
+          color: Colors.black,
+        ),
+      ],
     );
   }
 
