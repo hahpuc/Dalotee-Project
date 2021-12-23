@@ -62,6 +62,8 @@ dependencies:
   #Card flip
   flip_card: ^0.6.0
 
+  flutter_datetime_picker: ^1.5.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

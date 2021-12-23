@@ -3,6 +3,7 @@ import 'package:dalotee/presentation/pages/daily_detail/card_detail.dart';
 import 'package:dalotee/presentation/pages/daily_tab/daily_page.dart';
 import 'package:dalotee/presentation/pages/daily_tab/daily_selected/daily_selected_page.dart';
 import 'package:dalotee/presentation/pages/history_page/history_page.dart';
+import 'package:dalotee/presentation/pages/setting/setting_page.dart';
 import 'package:dalotee/presentation/pages/spread_tab/question_spread/question_spread_page.dart';
 import 'package:dalotee/presentation/pages/spread_tab/spread_card/spread_card_page.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ class RoutePaths {
   static const String SPREAD_LIST_QUESTION = '/spread_question';
   static const String SPREAD_CARD = '/spread_card';
   static const String HISTORY_CARD = 'history';
+  static const String SETTING = '/setting';
 }
 
 class Routes {
@@ -38,10 +40,12 @@ class Routes {
       case RoutePaths.SPREAD_CARD:
         return MaterialPageRoute(
             builder: (_) => SpreadCardPage(), settings: settings);
-
       case RoutePaths.HISTORY_CARD:
         return MaterialPageRoute(
             builder: (_) => HistoryPage(), settings: settings);
+      case RoutePaths.SETTING:
+        return MaterialPageRoute(
+            builder: (_) => SettingPage(), settings: settings);
       default:
         return null;
     }
